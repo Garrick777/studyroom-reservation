@@ -286,7 +286,7 @@ const handleExchange = async () => {
     detailVisible.value = false
     
     // 刷新数据
-    await userStore.getUserInfo()
+    await userStore.fetchUserInfo()
     await loadProducts()
     await loadExchanges()
     
