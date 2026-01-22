@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getAdminReservations, getAdminReservationStats, type ReservationVO } from '@/api/reservation'
+import { getAdminReservations, getAdminReservationStats, adminCancelReservation, adminForceSignOut, type ReservationVO } from '@/api/reservation'
 import { getRoomList } from '@/api/room'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  Calendar, Search, RefreshCw, Users, Clock, CheckCircle, XCircle, AlertTriangle
+  Calendar, Search, RefreshCw, Users, Clock, CheckCircle, XCircle, AlertTriangle, MoreHorizontal
 } from 'lucide-vue-next'
 
 const loading = ref(false)
@@ -37,24 +37,43 @@ const stats = ref({
 const statusOptions = [
   { label: '全部', value: '' },
   { label: '待签到', value: 'PENDING' },
-  { label: '使用中', value: 'SIGNED_IN' },
+  { label: '使用中', value: 'CHECKED_IN' },
   { label: '暂离', value: 'LEAVING' },
   { label: '已完成', value: 'COMPLETED' },
   { label: '已取消', value: 'CANCELLED' },
   { label: '爽约', value: 'NO_SHOW' },
-  { label: '违约', value: 'VIOLATION' }
+  { label: '违约', value: 'VIOLATION' },
+  { label: '已过期', value: 'EXPIRED' }
 ]
+
+// 状态文本映射
+const statusTextMap: Record<string, string> = {
+  PENDING: '待签到',
+  CHECKED_IN: '使用中',
+  LEAVING: '暂离',
+  COMPLETED: '已完成',
+  CANCELLED: '已取消',
+  NO_SHOW: '爽约',
+  VIOLATION: '违约',
+  EXPIRED: '已过期'
+}
+
+// 获取状态文本
+const getStatusText = (row: any) => {
+  return row.statusText || statusTextMap[row.status] || row.status
+}
 
 // 状态样式
 const statusType = (status: string) => {
   const map: Record<string, string> = {
     PENDING: 'warning',
-    SIGNED_IN: 'success',
+    CHECKED_IN: 'success',
     LEAVING: 'warning',
     COMPLETED: 'info',
     CANCELLED: '',
     NO_SHOW: 'danger',
-    VIOLATION: 'danger'
+    VIOLATION: 'danger',
+    EXPIRED: 'info'
   }
   return map[status] || ''
 }
@@ -130,6 +149,54 @@ function handlePageChange(page: number) {
 function formatDateTime(dt: string | null) {
   if (!dt) return '-'
   return new Date(dt).toLocaleString('zh-CN')
+}
+
+// 取消预约
+async function handleCancelReservation(row: ReservationVO) {
+  try {
+    await ElMessageBox.confirm(
+      `确定要取消预约 ${row.reservationNo} 吗？`,
+      '取消预约',
+      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+    )
+    await adminCancelReservation(row.id, '管理员取消')
+    ElMessage.success('预约已取消')
+    loadReservations()
+    loadStats()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      ElMessage.error(error.message || '取消失败')
+    }
+  }
+}
+
+// 强制签退
+async function handleForceSignOut(row: ReservationVO) {
+  try {
+    await ElMessageBox.confirm(
+      `确定要强制签退预约 ${row.reservationNo} 吗？`,
+      '强制签退',
+      { confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning' }
+    )
+    await adminForceSignOut(row.id)
+    ElMessage.success('已签退')
+    loadReservations()
+    loadStats()
+  } catch (error: any) {
+    if (error !== 'cancel') {
+      ElMessage.error(error.message || '签退失败')
+    }
+  }
+}
+
+// 判断是否可以取消
+function canCancel(row: ReservationVO) {
+  return row.status === 'PENDING'
+}
+
+// 判断是否可以强制签退
+function canForceSignOut(row: ReservationVO) {
+  return row.status === 'CHECKED_IN' || row.status === 'LEAVING'
 }
 </script>
 
@@ -228,7 +295,7 @@ function formatDateTime(dt: string | null) {
       <el-table-column prop="timeSlotName" label="时段" width="140" />
       <el-table-column label="状态" width="90">
         <template #default="{ row }">
-          <el-tag :type="statusType(row.status)" size="small">{{ row.statusText }}</el-tag>
+          <el-tag :type="statusType(row.status)" size="small">{{ getStatusText(row) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="签到时间" width="160">
@@ -244,6 +311,29 @@ function formatDateTime(dt: string | null) {
         <template #default="{ row }">
           <span v-if="row.earnedPoints > 0" style="color: #3FB19E">+{{ row.earnedPoints }}</span>
           <span v-else>-</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="150" fixed="right">
+        <template #default="{ row }">
+          <el-button
+            v-if="canCancel(row)"
+            type="danger"
+            size="small"
+            link
+            @click="handleCancelReservation(row)"
+          >
+            取消预约
+          </el-button>
+          <el-button
+            v-if="canForceSignOut(row)"
+            type="warning"
+            size="small"
+            link
+            @click="handleForceSignOut(row)"
+          >
+            强制签退
+          </el-button>
+          <span v-if="!canCancel(row) && !canForceSignOut(row)" class="text-muted">-</span>
         </template>
       </el-table-column>
     </el-table>

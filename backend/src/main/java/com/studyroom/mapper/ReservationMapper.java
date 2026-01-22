@@ -91,7 +91,7 @@ public interface ReservationMapper extends BaseMapper<Reservation> {
             "LEFT JOIN seat s ON r.seat_id = s.id " +
             "LEFT JOIN study_room sr ON r.room_id = sr.id " +
             "LEFT JOIN time_slot ts ON r.time_slot_id = ts.id " +
-            "WHERE r.user_id = #{userId} AND r.status IN ('PENDING', 'SIGNED_IN', 'LEAVING') " +
+            "WHERE r.user_id = #{userId} AND r.status IN ('PENDING', 'CHECKED_IN', 'LEAVING') " +
             "AND r.date = CURDATE() " +
             "ORDER BY r.start_time LIMIT 1")
     Reservation selectCurrentByUserId(@Param("userId") Long userId);

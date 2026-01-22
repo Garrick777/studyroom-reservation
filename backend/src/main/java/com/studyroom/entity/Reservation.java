@@ -106,12 +106,13 @@ public class Reservation implements Serializable {
     // 预约状态枚举
     public enum Status {
         PENDING("待签到"),
-        SIGNED_IN("已签到/使用中"),
+        CHECKED_IN("使用中"),
         LEAVING("暂离"),
         COMPLETED("已完成"),
         CANCELLED("已取消"),
-        NO_SHOW("未签到/爽约"),
-        VIOLATION("违约");
+        NO_SHOW("爽约"),
+        VIOLATION("违约"),
+        EXPIRED("已过期");
 
         private final String description;
 

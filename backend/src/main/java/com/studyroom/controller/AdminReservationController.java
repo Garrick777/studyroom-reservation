@@ -52,7 +52,7 @@ public class AdminReservationController {
         
         long total = all.getTotal();
         long pending = all.getRecords().stream().filter(r -> "PENDING".equals(r.getStatus())).count();
-        long signedIn = all.getRecords().stream().filter(r -> "SIGNED_IN".equals(r.getStatus())).count();
+        long signedIn = all.getRecords().stream().filter(r -> "CHECKED_IN".equals(r.getStatus())).count();
         long leaving = all.getRecords().stream().filter(r -> "LEAVING".equals(r.getStatus())).count();
         long completed = all.getRecords().stream().filter(r -> "COMPLETED".equals(r.getStatus())).count();
         long cancelled = all.getRecords().stream().filter(r -> "CANCELLED".equals(r.getStatus())).count();
@@ -69,5 +69,19 @@ public class AdminReservationController {
         stats.put("noShow", noShow);
         
         return Result.success(stats);
+    }
+
+    @Operation(summary = "管理员取消预约")
+    @PostMapping("/{id}/cancel")
+    public Result<Void> cancelReservation(@PathVariable Long id, @RequestParam(required = false) String reason) {
+        reservationService.adminCancelReservation(id, reason);
+        return Result.success();
+    }
+
+    @Operation(summary = "管理员强制签退")
+    @PostMapping("/{id}/force-sign-out")
+    public Result<Void> forceSignOut(@PathVariable Long id) {
+        reservationService.adminForceSignOut(id);
+        return Result.success();
     }
 }

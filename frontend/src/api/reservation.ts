@@ -143,3 +143,15 @@ export function getAdminReservationStats() {
     noShow: number
   }>('/manage/reservations/stats/today')
 }
+
+// 管理员取消预约
+export function adminCancelReservation(id: number, reason?: string) {
+  return request.post(`/manage/reservations/${id}/cancel`, null, {
+    params: { reason }
+  })
+}
+
+// 管理员强制签退
+export function adminForceSignOut(id: number) {
+  return request.post(`/manage/reservations/${id}/force-sign-out`)
+}

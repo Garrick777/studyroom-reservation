@@ -100,7 +100,7 @@ public class ReservationScheduleTask {
         LocalDateTime now = LocalDateTime.now();
         
         LambdaQueryWrapper<Reservation> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Reservation::getStatus, Reservation.Status.SIGNED_IN.name())
+        wrapper.eq(Reservation::getStatus, Reservation.Status.CHECKED_IN.name())
                .lt(Reservation::getEndTime, now);
         
         List<Reservation> expiredList = reservationMapper.selectList(wrapper);

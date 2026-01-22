@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.studyroom.common.PageResult;
+import com.studyroom.common.ResultCode;
 import com.studyroom.dto.reservation.*;
 import com.studyroom.entity.*;
 import com.studyroom.exception.BusinessException;
@@ -161,7 +162,7 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
             throw new BusinessException("已超过签到时间");
         }
 
-        reservation.setStatus(Reservation.Status.SIGNED_IN.name());
+        reservation.setStatus(Reservation.Status.CHECKED_IN.name());
         reservation.setSignInTime(now);
         updateById(reservation);
 
@@ -180,7 +181,7 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
         }
         
         String status = reservation.getStatus();
-        if (!Reservation.Status.SIGNED_IN.name().equals(status) && 
+        if (!Reservation.Status.CHECKED_IN.name().equals(status) && 
             !Reservation.Status.LEAVING.name().equals(status)) {
             throw new BusinessException("当前状态无法签退");
         }
@@ -225,7 +226,7 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
         if (!reservation.getUserId().equals(userId)) {
             throw new BusinessException("无权操作此预约");
         }
-        if (!Reservation.Status.SIGNED_IN.name().equals(reservation.getStatus())) {
+        if (!Reservation.Status.CHECKED_IN.name().equals(reservation.getStatus())) {
             throw new BusinessException("当前状态无法暂离");
         }
         if (reservation.getLeaveCount() >= MAX_LEAVE_COUNT) {
@@ -261,7 +262,7 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
             throw new BusinessException("暂离超时，预约已自动结束");
         }
 
-        reservation.setStatus(Reservation.Status.SIGNED_IN.name());
+        reservation.setStatus(Reservation.Status.CHECKED_IN.name());
         reservation.setReturnTime(now);
         updateById(reservation);
 
@@ -327,7 +328,7 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
         
         if (query.getStatus() != null && !query.getStatus().isEmpty()) {
             if ("ACTIVE".equals(query.getStatus())) {
-                wrapper.in(Reservation::getStatus, "PENDING", "SIGNED_IN", "LEAVING");
+                wrapper.in(Reservation::getStatus, "PENDING", "CHECKED_IN", "LEAVING");
             } else if ("HISTORY".equals(query.getStatus())) {
                 wrapper.in(Reservation::getStatus, "COMPLETED", "CANCELLED", "NO_SHOW", "VIOLATION");
             } else {
@@ -427,7 +428,7 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
         String status = reservation.getStatus();
         
         boolean isPending = Reservation.Status.PENDING.name().equals(status);
-        boolean isSignedIn = Reservation.Status.SIGNED_IN.name().equals(status);
+        boolean isSignedIn = Reservation.Status.CHECKED_IN.name().equals(status);
         boolean isLeaving = Reservation.Status.LEAVING.name().equals(status);
         
         LocalDateTime earliestSignIn = reservation.getStartTime().minusMinutes(SIGN_IN_ADVANCE_MINUTES);
@@ -446,5 +447,70 @@ public class ReservationService extends ServiceImpl<ReservationMapper, Reservati
         }
         
         return vo;
+    }
+
+    /**
+     * 管理员取消预约
+     */
+    @Transactional
+    public void adminCancelReservation(Long reservationId, String reason) {
+        Reservation reservation = reservationMapper.selectById(reservationId);
+        if (reservation == null) {
+            throw new BusinessException(ResultCode.NOT_FOUND, "预约不存在");
+        }
+        
+        String status = reservation.getStatus();
+        if (!Reservation.Status.PENDING.name().equals(status)) {
+            throw new BusinessException(ResultCode.BAD_REQUEST, "只能取消待签到的预约");
+        }
+        
+        reservation.setStatus(Reservation.Status.CANCELLED.name());
+        reservation.setRemark(reason != null ? "管理员取消: " + reason : "管理员取消");
+        reservationMapper.updateById(reservation);
+        
+        log.info("管理员取消预约: reservationId={}, reason={}", reservationId, reason);
+    }
+
+    /**
+     * 管理员强制签退
+     */
+    @Transactional
+    public void adminForceSignOut(Long reservationId) {
+        Reservation reservation = reservationMapper.selectById(reservationId);
+        if (reservation == null) {
+            throw new BusinessException(ResultCode.NOT_FOUND, "预约不存在");
+        }
+        
+        String status = reservation.getStatus();
+        if (!Reservation.Status.CHECKED_IN.name().equals(status) && !Reservation.Status.LEAVING.name().equals(status)) {
+            throw new BusinessException(ResultCode.BAD_REQUEST, "只能签退使用中或暂离的预约");
+        }
+        
+        LocalDateTime now = LocalDateTime.now();
+        reservation.setStatus(Reservation.Status.COMPLETED.name());
+        reservation.setSignOutTime(now);
+        
+        // 计算实际使用时长
+        if (reservation.getSignInTime() != null) {
+            long minutes = ChronoUnit.MINUTES.between(reservation.getSignInTime(), now);
+            reservation.setActualDuration((int) minutes);
+            
+            // 计算积分（每小时10积分）
+            int points = (int) (minutes / 60) * POINTS_PER_HOUR;
+            reservation.setEarnedPoints(points);
+            
+            // 更新用户学习时长和积分
+            User user = userMapper.selectById(reservation.getUserId());
+            if (user != null) {
+                user.setTotalStudyTime((user.getTotalStudyTime() != null ? user.getTotalStudyTime() : 0) + (int) minutes);
+                user.setTotalPoints((user.getTotalPoints() != null ? user.getTotalPoints() : 0) + points);
+                userMapper.updateById(user);
+            }
+        }
+        
+        reservation.setRemark("管理员强制签退");
+        reservationMapper.updateById(reservation);
+        
+        log.info("管理员强制签退: reservationId={}", reservationId);
     }
 }
