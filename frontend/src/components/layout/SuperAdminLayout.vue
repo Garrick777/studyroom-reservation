@@ -52,7 +52,7 @@ const toggleCollapse = () => {
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <div class="logo-icon">⚙️</div>
+          <div class="logo-icon"><Settings :size="24" /></div>
           <span v-if="!collapsed" class="logo-text">超级管理</span>
         </div>
         <button class="collapse-btn" @click="toggleCollapse">
@@ -144,7 +144,10 @@ const toggleCollapse = () => {
   overflow: hidden;
   
   .logo-icon {
-    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
     flex-shrink: 0;
   }
   

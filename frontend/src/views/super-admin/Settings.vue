@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { Settings } from 'lucide-vue-next'
 // TODO: 系统设置
 </script>
 
 <template>
   <div class="page-placeholder">
-    <h2>⚙️ 系统设置</h2>
+    <h2><Settings :size="24" /> 系统设置</h2>
     <p>待开发</p>
   </div>
 </template>

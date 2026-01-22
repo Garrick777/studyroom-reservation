@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { UserCog } from 'lucide-vue-next'
 // TODO: 管理员管理
 </script>
 
 <template>
   <div class="page-placeholder">
-    <h2>👨‍💼 管理员管理</h2>
+    <h2><UserCog :size="24" /> 管理员管理</h2>
     <p>待开发</p>
   </div>
 </template>

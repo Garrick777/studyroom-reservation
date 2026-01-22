@@ -140,7 +140,7 @@ onUnmounted(() => {
     <!-- 页头 -->
     <div class="page-header">
       <div class="header-left">
-        <h1>📊 实时监控中心</h1>
+        <h1><Activity :size="28" /> 实时监控中心</h1>
         <p>自习室运营状态一览</p>
       </div>
       <div class="header-right">

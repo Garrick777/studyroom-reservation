@@ -4,7 +4,7 @@
     <div class="page-header">
       <div class="header-bg"></div>
       <div class="header-content">
-        <h1>🏆 排行榜</h1>
+        <h1><Trophy :size="28" class="title-icon" /> 排行榜</h1>
         <p>与学霸们一起竞争，成为学习之星</p>
       </div>
     </div>
@@ -14,7 +14,7 @@
       <h3>我的排名</h3>
       <div class="my-rank-grid">
         <div class="rank-card study-time">
-          <div class="rank-icon">📚</div>
+          <div class="rank-icon"><BookOpen :size="24" /></div>
           <div class="rank-info">
             <span class="rank-type">学习时长</span>
             <span class="rank-value">第 {{ myRanks.studyTime?.rank || '-' }} 名</span>
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="rank-card checkin">
-          <div class="rank-icon">🔥</div>
+          <div class="rank-icon"><Flame :size="24" /></div>
           <div class="rank-info">
             <span class="rank-type">连续打卡</span>
             <span class="rank-value">第 {{ myRanks.checkIn?.rank || '-' }} 名</span>
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="rank-card points">
-          <div class="rank-icon">💎</div>
+          <div class="rank-icon"><Gem :size="24" /></div>
           <div class="rank-info">
             <span class="rank-type">积分排名</span>
             <span class="rank-value">第 {{ myRanks.points?.rank || '-' }} 名</span>
@@ -48,7 +48,7 @@
         :class="['tab-item', { active: activeTab === tab.key }]"
         @click="activeTab = tab.key"
       >
-        <span class="tab-icon">{{ tab.icon }}</span>
+        <span class="tab-icon"><component :is="tab.icon" :size="18" /></span>
         <span class="tab-name">{{ tab.name }}</span>
       </div>
     </div>
@@ -116,7 +116,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, markRaw } from 'vue'
 import { 
   getStudyTimeRanking, 
   getCheckInStreakRanking, 
@@ -124,12 +124,13 @@ import {
   getAchievementRanking,
   getRankingOverview 
 } from '@/api/ranking'
+import { Trophy, BookOpen, Flame, Gem, Medal } from 'lucide-vue-next'
 
 const tabs = [
-  { key: 'studyTime', name: '学习时长', icon: '📚' },
-  { key: 'checkIn', name: '连续打卡', icon: '🔥' },
-  { key: 'points', name: '积分排名', icon: '💎' },
-  { key: 'achievement', name: '成就达人', icon: '🏅' }
+  { key: 'studyTime', name: '学习时长', icon: markRaw(BookOpen) },
+  { key: 'checkIn', name: '连续打卡', icon: markRaw(Flame) },
+  { key: 'points', name: '积分排名', icon: markRaw(Gem) },
+  { key: 'achievement', name: '成就达人', icon: markRaw(Medal) }
 ]
 
 const activeTab = ref('studyTime')

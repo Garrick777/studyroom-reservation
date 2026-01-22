@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { Users } from 'lucide-vue-next'
 // TODO: 用户管理
 </script>
 
 <template>
   <div class="page-placeholder">
-    <h2>👥 用户管理</h2>
+    <h2><Users :size="24" /> 用户管理</h2>
     <p>待开发</p>
   </div>
 </template>

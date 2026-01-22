@@ -12,7 +12,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  ShoppingBag
+  ShoppingBag,
+  School
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -51,7 +52,7 @@ const toggleCollapse = () => {
     <aside class="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <div class="logo-icon">🏫</div>
+          <div class="logo-icon"><School :size="24" /></div>
           <span v-if="!collapsed" class="logo-text">管理后台</span>
         </div>
         <button class="collapse-btn" @click="toggleCollapse">
@@ -144,7 +145,10 @@ const toggleCollapse = () => {
   overflow: hidden;
   
   .logo-icon {
-    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
     flex-shrink: 0;
   }
   

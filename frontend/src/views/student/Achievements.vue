@@ -2,14 +2,14 @@
   <div class="achievements-page">
     <!-- 页面标题 -->
     <div class="page-header">
-      <h1>🏆 成就中心</h1>
+      <h1><Trophy :size="28" class="title-icon" /> 成就中心</h1>
       <p>探索成就，解锁荣耀</p>
     </div>
 
     <!-- 统计卡片 -->
     <div class="stats-section">
       <div class="stat-card total">
-        <div class="stat-icon">🎯</div>
+        <div class="stat-icon"><Target :size="24" /></div>
         <div class="stat-info">
           <div class="stat-value">{{ stats.completedCount }}/{{ stats.totalCount }}</div>
           <div class="stat-label">已解锁</div>
@@ -20,7 +20,7 @@
       </div>
       
       <div class="stat-card unclaimed" v-if="stats.unclaimedCount > 0" @click="showUnclaimedDialog">
-        <div class="stat-icon pulse">🎁</div>
+        <div class="stat-icon pulse"><Gift :size="24" /></div>
         <div class="stat-info">
           <div class="stat-value">{{ stats.unclaimedCount }}</div>
           <div class="stat-label">待领取奖励</div>
@@ -56,7 +56,7 @@
         :class="['tab-btn', { active: activeCategory === cat.value }]"
         @click="activeCategory = cat.value"
       >
-        <span class="tab-icon">{{ cat.icon }}</span>
+        <span class="tab-icon"><component :is="cat.icon" :size="16" /></span>
         <span>{{ cat.label }}</span>
       </button>
     </div>
@@ -286,7 +286,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, markRaw } from 'vue'
 import { ElMessage } from 'element-plus'
 import { 
   getAllAchievements, 
@@ -301,14 +301,15 @@ import {
   type AchievementStats
 } from '@/api/achievement'
 import { getAchievementIcon } from '@/utils/achievementIcons'
+import { Trophy, BookOpen, CheckCircle, Users, Star, Target, Gift } from 'lucide-vue-next'
 
 // 分类定义
 const categories = [
-  { value: '', label: '全部', icon: '🏆' },
-  { value: 'STUDY', label: '学习', icon: '📚' },
-  { value: 'CHECK_IN', label: '打卡', icon: '✅' },
-  { value: 'SOCIAL', label: '社交', icon: '👥' },
-  { value: 'SPECIAL', label: '特殊', icon: '⭐' }
+  { value: '', label: '全部', icon: markRaw(Trophy) },
+  { value: 'STUDY', label: '学习', icon: markRaw(BookOpen) },
+  { value: 'CHECK_IN', label: '打卡', icon: markRaw(CheckCircle) },
+  { value: 'SOCIAL', label: '社交', icon: markRaw(Users) },
+  { value: 'SPECIAL', label: '特殊', icon: markRaw(Star) }
 ]
 
 // 状态

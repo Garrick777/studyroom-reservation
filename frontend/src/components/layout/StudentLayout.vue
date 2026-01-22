@@ -19,7 +19,8 @@ import {
   Users,
   UsersRound,
   MessageCircle,
-  ShoppingBag
+  ShoppingBag,
+  BookOpen
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -76,7 +77,7 @@ const toggleMobileMenu = () => {
           <X v-else :size="24" />
         </button>
         <div class="logo" @click="handleNavigate('/dashboard')">
-          <div class="logo-icon">📚</div>
+          <div class="logo-icon"><BookOpen :size="24" /></div>
           <span class="logo-text">智慧自习室</span>
         </div>
       </div>
@@ -194,7 +195,10 @@ const toggleMobileMenu = () => {
   cursor: pointer;
   
   .logo-icon {
-    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $primary;
   }
   
   .logo-text {

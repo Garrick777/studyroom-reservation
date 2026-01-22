@@ -98,7 +98,7 @@ onMounted(() => {
     <!-- 页头 -->
     <div class="page-header">
       <div class="header-content">
-        <h1>⚙️ 数据中心</h1>
+        <h1><Settings :size="28" class="title-icon" /> 数据中心</h1>
         <p>系统管理与数据监控</p>
       </div>
       <div class="system-status">

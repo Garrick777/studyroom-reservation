@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#fce7f3"/><text x="50" y="55" text-anchor="middle" font-size="40" fill="#ec4899">⚡</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24">
+  <defs>
+    <linearGradient id="priority-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f97316"/>
+      <stop offset="100%" style="stop-color:#ea580c"/>
+    </linearGradient>
+  </defs>
+  <rect width="24" height="24" rx="4" fill="#fff7ed"/>
+  <path fill="url(#priority-grad)" d="M13.73 2L5 3.21v9.08c0 3.76 2.59 7.27 6.18 8.71l.82.36.82-.36C16.41 19.56 19 16.05 19 12.29V3.21L13.73 2zM17 12.29c0 2.82-1.85 5.47-4.5 6.68V4.87L17 5.11v7.18z"/>
+  <path d="M10 10l2 2 4-4" fill="none" stroke="#fff7ed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
