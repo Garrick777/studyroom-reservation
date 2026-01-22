@@ -23,8 +23,8 @@ public interface StudyGoalMapper extends BaseMapper<StudyGoal> {
      */
     @Select("<script>" +
             "SELECT * FROM study_goal WHERE user_id = #{userId} " +
-            "<if test='status != null'> AND status = #{status} </if>" +
-            "<if test='type != null'> AND type = #{type} </if>" +
+            "<if test=\"status != null and status != ''\"> AND status = #{status} </if>" +
+            "<if test=\"type != null and type != ''\"> AND type = #{type} </if>" +
             "ORDER BY created_at DESC" +
             "</script>")
     IPage<StudyGoal> selectUserGoals(Page<StudyGoal> page,
