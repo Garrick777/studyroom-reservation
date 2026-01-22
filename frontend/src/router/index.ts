@@ -241,6 +241,18 @@ const router = createRouter({
 // 标记是否已初始化
 let isInitialized = false
 
+// 根据角色获取首页路径
+function getHomePathByRole(role: string): string {
+  switch (role) {
+    case 'SUPER_ADMIN':
+      return '/super/dashboard'
+    case 'ADMIN':
+      return '/admin/dashboard'
+    default:
+      return '/dashboard'
+  }
+}
+
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
   NProgress.start()
@@ -276,10 +288,21 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   
+  // 访问根路径时，根据角色重定向到对应首页
+  if (to.path === '/' || to.path === '/dashboard') {
+    const homePath = getHomePathByRole(userStore.userRole)
+    if (to.path !== homePath && userStore.userRole !== 'STUDENT') {
+      next(homePath)
+      return
+    }
+  }
+  
   // 需要角色验证
   if (requiredRoles && requiredRoles.length > 0) {
     if (!requiredRoles.includes(userStore.userRole)) {
-      next('/403')
+      // 如果没有权限，重定向到对应角色的首页而不是403
+      const homePath = getHomePathByRole(userStore.userRole)
+      next(homePath)
       return
     }
   }
