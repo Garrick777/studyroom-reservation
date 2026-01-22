@@ -388,6 +388,55 @@ public class GroupService {
     }
 
     /**
+     * 转让小组
+     */
+    @Transactional
+    public void transferGroup(Long creatorId, Long groupId, Long newCreatorId) {
+        StudyGroup group = studyGroupMapper.selectById(groupId);
+        if (group == null || group.getStatus() == 0) {
+            throw new BusinessException(ResultCode.NOT_FOUND, "小组不存在或已解散");
+        }
+
+        if (!group.getCreatorId().equals(creatorId)) {
+            throw new BusinessException(ResultCode.FORBIDDEN, "只有创建者可以转让小组");
+        }
+
+        if (creatorId.equals(newCreatorId)) {
+            throw new BusinessException(ResultCode.BAD_REQUEST, "不能转让给自己");
+        }
+
+        // 检查新创建者是否是小组成员
+        GroupMember newCreatorMember = groupMemberMapper.selectByGroupAndUser(groupId, newCreatorId);
+        if (newCreatorMember == null || newCreatorMember.getStatus() != GroupMember.STATUS_ACTIVE) {
+            throw new BusinessException(ResultCode.BAD_REQUEST, "目标用户不是小组成员");
+        }
+
+        // 更新小组创建者
+        group.setCreatorId(newCreatorId);
+        group.setUpdatedAt(LocalDateTime.now());
+        studyGroupMapper.updateById(group);
+
+        // 更新原创建者角色为普通成员
+        GroupMember oldCreatorMember = groupMemberMapper.selectByGroupAndUser(groupId, creatorId);
+        if (oldCreatorMember != null) {
+            oldCreatorMember.setRole(GroupMember.ROLE_ADMIN); // 原创建者变为管理员
+            groupMemberMapper.updateById(oldCreatorMember);
+        }
+
+        // 更新新创建者角色
+        newCreatorMember.setRole(GroupMember.ROLE_CREATOR);
+        groupMemberMapper.updateById(newCreatorMember);
+
+        // 通知新创建者
+        sendGroupNotification(newCreatorId, Message.TYPE_GROUP,
+                "小组转让通知",
+                String.format("您已成为小组「%s」的新创建者", group.getName()),
+                groupId);
+
+        log.info("用户{}将小组{}转让给了用户{}", creatorId, groupId, newCreatorId);
+    }
+
+    /**
      * 更新小组信息
      */
     @Transactional

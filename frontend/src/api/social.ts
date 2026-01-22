@@ -127,6 +127,13 @@ export function dissolveGroup(groupId: number) {
   return request.delete(`/groups/${groupId}`)
 }
 
+/** 转让小组 */
+export function transferGroup(groupId: number, newCreatorId: number) {
+  return request.post(`/groups/${groupId}/transfer`, null, {
+    params: { newCreatorId }
+  })
+}
+
 /** 更新小组信息 */
 export function updateGroup(groupId: number, data: Record<string, any>) {
   return request.put(`/groups/${groupId}`, data)

@@ -104,6 +104,14 @@ public class GroupController {
         return Result.success();
     }
 
+    @Operation(summary = "转让小组")
+    @PostMapping("/{groupId}/transfer")
+    public Result<Void> transferGroup(@PathVariable Long groupId, @RequestParam Long newCreatorId) {
+        Long userId = SecurityUtil.getCurrentUserId();
+        groupService.transferGroup(userId, groupId, newCreatorId);
+        return Result.success();
+    }
+
     @Operation(summary = "更新小组信息")
     @PutMapping("/{groupId}")
     public Result<Void> updateGroup(@PathVariable Long groupId, @RequestBody Map<String, Object> params) {

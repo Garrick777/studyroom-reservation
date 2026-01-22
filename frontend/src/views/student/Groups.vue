@@ -338,6 +338,138 @@
         </el-button>
       </template>
     </el-dialog>
+
+    <!-- 管理小组对话框 -->
+    <el-dialog 
+      v-model="showManageDialog" 
+      title="管理小组" 
+      width="700px"
+      :close-on-click-modal="false"
+    >
+      <el-tabs v-model="manageTab">
+        <!-- 成员管理 -->
+        <el-tab-pane label="成员管理" name="members">
+          <div class="members-manage">
+            <el-table :data="members" style="width: 100%" max-height="400">
+              <el-table-column label="成员" min-width="150">
+                <template #default="{ row }">
+                  <div class="member-info">
+                    <el-avatar :size="32" :src="row.user?.avatar || undefined">
+                      {{ (row.user?.realName || row.user?.username || '?').charAt(0) }}
+                    </el-avatar>
+                    <div class="member-name">
+                      <span>{{ row.user?.realName || row.user?.username }}</span>
+                      <small>{{ row.nickname ? `(${row.nickname})` : '' }}</small>
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="角色" width="100">
+                <template #default="{ row }">
+                  <el-tag :type="getRoleType(row.role)" size="small">
+                    {{ getRoleName(row.role) }}
+                  </el-tag>
+                </template>
+              </el-table-column>
+              <el-table-column label="贡献时长" width="100" align="center">
+                <template #default="{ row }">
+                  {{ formatHours(row.contributionHours) }}
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="180" align="center">
+                <template #default="{ row }">
+                  <template v-if="row.role !== 'CREATOR'">
+                    <el-button 
+                      v-if="groupDetail?.memberRole === 'CREATOR'"
+                      size="small" 
+                      :type="row.role === 'ADMIN' ? 'warning' : 'primary'"
+                      text
+                      @click="handleToggleAdmin(row)"
+                    >
+                      {{ row.role === 'ADMIN' ? '取消管理' : '设为管理' }}
+                    </el-button>
+                    <el-button 
+                      v-if="groupDetail?.isAdmin && row.role !== 'ADMIN'"
+                      size="small" 
+                      type="danger"
+                      text
+                      @click="handleRemoveMember(row)"
+                    >
+                      移除
+                    </el-button>
+                  </template>
+                  <span v-else class="creator-badge">创建者</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-tab-pane>
+
+        <!-- 编辑小组信息 -->
+        <el-tab-pane label="小组设置" name="settings">
+          <el-form :model="editForm" label-width="100px">
+            <el-form-item label="小组名称">
+              <el-input v-model="editForm.name" maxlength="30" show-word-limit />
+            </el-form-item>
+            <el-form-item label="小组简介">
+              <el-input v-model="editForm.description" type="textarea" :rows="3" maxlength="200" show-word-limit />
+            </el-form-item>
+            <el-form-item label="标签">
+              <el-input v-model="editForm.tags" placeholder="多个标签用逗号分隔" />
+            </el-form-item>
+            <el-form-item label="最大人数">
+              <el-input-number v-model="editForm.maxMembers" :min="groupDetail?.memberCount || 2" :max="100" />
+            </el-form-item>
+            <el-form-item label="公开小组">
+              <el-switch v-model="editForm.isPublic" />
+            </el-form-item>
+            <el-form-item label="需要审批">
+              <el-switch v-model="editForm.needApprove" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="handleUpdateGroup" :loading="updateLoading">
+                保存修改
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-tab-pane>
+
+        <!-- 转让/解散小组（仅创建者可见） -->
+        <el-tab-pane v-if="groupDetail?.memberRole === 'CREATOR'" label="高级操作" name="advanced">
+          <div class="advanced-operations">
+            <div class="operation-card">
+              <div class="operation-info">
+                <h4>转让小组</h4>
+                <p>将小组创建者权限转让给其他成员，转让后您将变为管理员</p>
+              </div>
+              <el-select v-model="transferTargetId" placeholder="选择新的创建者" style="width: 200px; margin-right: 10px;">
+                <el-option 
+                  v-for="m in members.filter(m => m.role !== 'CREATOR')"
+                  :key="m.userId"
+                  :label="m.user?.realName || m.user?.username"
+                  :value="m.userId"
+                />
+              </el-select>
+              <el-button type="warning" @click="handleTransferGroup" :disabled="!transferTargetId">
+                转让小组
+              </el-button>
+            </div>
+            
+            <el-divider />
+            
+            <div class="operation-card danger">
+              <div class="operation-info">
+                <h4>解散小组</h4>
+                <p>解散小组后，所有成员将被移出，此操作不可撤销</p>
+              </div>
+              <el-button type="danger" @click="handleDissolveGroup">
+                解散小组
+              </el-button>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </div>
 </template>
 
@@ -347,7 +479,8 @@ import { ElMessage, ElMessageBox, type FormInstance, type FormRules } from 'elem
 import { Plus, Star, Search, User, Clock } from '@element-plus/icons-vue'
 import { 
   getMyGroups, getPublicGroups, getGroupDetail, getGroupMembers,
-  createGroup, joinGroup, leaveGroup
+  createGroup, joinGroup, leaveGroup, updateGroup, removeMember, setAdmin,
+  dissolveGroup, transferGroup
 } from '@/api/social'
 
 // 状态
@@ -386,6 +519,20 @@ const createRules: FormRules = {
     { min: 2, max: 30, message: '名称长度为2-30个字符', trigger: 'blur' }
   ]
 }
+
+// 管理小组
+const showManageDialog = ref(false)
+const manageTab = ref('members')
+const updateLoading = ref(false)
+const transferTargetId = ref<number>()
+const editForm = reactive({
+  name: '',
+  description: '',
+  maxMembers: 50,
+  tags: '',
+  isPublic: true,
+  needApprove: false
+})
 
 // 渐变色
 const gradients = [
@@ -521,8 +668,128 @@ const handleLeaveGroup = async () => {
 
 // 管理小组
 const goToManage = () => {
-  // TODO: 跳转到管理页面
-  ElMessage.info('管理功能开发中')
+  if (!groupDetail.value) return
+  // 初始化编辑表单
+  editForm.name = groupDetail.value.name || ''
+  editForm.description = groupDetail.value.description || ''
+  editForm.maxMembers = groupDetail.value.maxMembers || 50
+  editForm.tags = groupDetail.value.tags || ''
+  editForm.isPublic = !!groupDetail.value.isPublic
+  editForm.needApprove = !!groupDetail.value.needApprove
+  transferTargetId.value = undefined
+  manageTab.value = 'members'
+  showManageDialog.value = true
+}
+
+// 设置/取消管理员
+const handleToggleAdmin = async (member: any) => {
+  const isAdmin = member.role === 'ADMIN'
+  try {
+    await ElMessageBox.confirm(
+      isAdmin 
+        ? `确定要取消「${member.user?.realName || member.user?.username}」的管理员权限吗？`
+        : `确定要将「${member.user?.realName || member.user?.username}」设为管理员吗？`,
+      '提示'
+    )
+    await setAdmin(groupDetail.value.id, member.userId, !isAdmin)
+    ElMessage.success(isAdmin ? '已取消管理员' : '已设为管理员')
+    // 刷新成员列表
+    const membersRes = await getGroupMembers(groupDetail.value.id)
+    members.value = membersRes || []
+  } catch (e: any) {
+    if (e !== 'cancel') {
+      ElMessage.error(e.message || '操作失败')
+    }
+  }
+}
+
+// 移除成员
+const handleRemoveMember = async (member: any) => {
+  try {
+    await ElMessageBox.confirm(
+      `确定要将「${member.user?.realName || member.user?.username}」移出小组吗？`,
+      '移除成员',
+      { type: 'warning' }
+    )
+    await removeMember(groupDetail.value.id, member.id)
+    ElMessage.success('已移除成员')
+    // 刷新成员列表
+    const membersRes = await getGroupMembers(groupDetail.value.id)
+    members.value = membersRes || []
+    // 刷新详情
+    const detailRes = await getGroupDetail(groupDetail.value.id)
+    groupDetail.value = detailRes
+  } catch (e: any) {
+    if (e !== 'cancel') {
+      ElMessage.error(e.message || '移除失败')
+    }
+  }
+}
+
+// 更新小组信息
+const handleUpdateGroup = async () => {
+  updateLoading.value = true
+  try {
+    await updateGroup(groupDetail.value.id, {
+      name: editForm.name,
+      description: editForm.description,
+      maxMembers: editForm.maxMembers,
+      tags: editForm.tags,
+      isPublic: editForm.isPublic,
+      needApprove: editForm.needApprove
+    })
+    ElMessage.success('小组信息已更新')
+    // 刷新详情
+    const detailRes = await getGroupDetail(groupDetail.value.id)
+    groupDetail.value = detailRes
+    loadMyGroups()
+  } catch (e: any) {
+    ElMessage.error(e.message || '更新失败')
+  } finally {
+    updateLoading.value = false
+  }
+}
+
+// 转让小组
+const handleTransferGroup = async () => {
+  if (!transferTargetId.value) return
+  const targetMember = members.value.find(m => m.userId === transferTargetId.value)
+  try {
+    await ElMessageBox.confirm(
+      `确定要将小组转让给「${targetMember?.user?.realName || targetMember?.user?.username}」吗？转让后您将变为管理员。`,
+      '转让小组',
+      { type: 'warning' }
+    )
+    await transferGroup(groupDetail.value.id, transferTargetId.value)
+    ElMessage.success('小组已转让')
+    showManageDialog.value = false
+    showDetailDialog.value = false
+    loadMyGroups()
+  } catch (e: any) {
+    if (e !== 'cancel') {
+      ElMessage.error(e.message || '转让失败')
+    }
+  }
+}
+
+// 解散小组
+const handleDissolveGroup = async () => {
+  try {
+    await ElMessageBox.confirm(
+      `确定要解散小组「${groupDetail.value.name}」吗？此操作不可撤销，所有成员将被移出。`,
+      '解散小组',
+      { type: 'error', confirmButtonText: '确定解散', confirmButtonClass: 'el-button--danger' }
+    )
+    await dissolveGroup(groupDetail.value.id)
+    ElMessage.success('小组已解散')
+    showManageDialog.value = false
+    showDetailDialog.value = false
+    loadMyGroups()
+  } catch (e: any) {
+    if (e !== 'cancel') {
+      ElMessage.error(e.message || '解散失败')
+    }
+  }
 }
 
 // 创建小组
@@ -911,6 +1178,59 @@ onMounted(() => {
   margin-left: 12px;
   font-size: 12px;
   color: #999;
+}
+
+// 管理小组
+.members-manage {
+  .member-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    
+    .member-name {
+      small {
+        color: #999;
+        font-size: 12px;
+        margin-left: 4px;
+      }
+    }
+  }
+  
+  .creator-badge {
+    color: #999;
+    font-size: 13px;
+  }
+}
+
+.advanced-operations {
+  padding: 20px 0;
+  
+  .operation-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    
+    &.danger {
+      background: #fff5f5;
+    }
+    
+    .operation-info {
+      h4 {
+        margin: 0 0 8px 0;
+        font-size: 16px;
+        color: #1a1a2e;
+      }
+      
+      p {
+        margin: 0;
+        font-size: 13px;
+        color: #666;
+      }
+    }
+  }
 }
 
 .pagination {
