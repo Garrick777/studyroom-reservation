@@ -10,7 +10,6 @@ import {
   User,
   Clock,
   Zap,
-  Sun,
   Wrench,
   Eye
 } from 'lucide-vue-next'
@@ -381,11 +380,9 @@ onUnmounted(() => {
           >
             <template v-if="seat">
               <span class="seat-no">{{ seat.seatNo }}</span>
+              <!-- 只显示电源座位标识 -->
               <div v-if="seat.seatType === 'POWER'" class="seat-badge power">
                 <Zap :size="10" />
-              </div>
-              <div v-if="seat.seatType === 'WINDOW'" class="seat-badge window">
-                <Sun :size="10" />
               </div>
               <div v-if="selectionMode && selectedSeatIds.includes(seat.id)" class="check-mark">✓</div>
             </template>
@@ -394,7 +391,7 @@ onUnmounted(() => {
         
         <!-- 列标签 -->
         <div class="col-labels">
-          <div class="row-label"></div>
+          <div class="row-label-placeholder"></div>
           <div v-for="col in (seatGrid[0]?.length || 0)" :key="col" class="col-label">
             {{ col }}
           </div>
@@ -766,7 +763,7 @@ onUnmounted(() => {
   margin-bottom: 8px;
 }
 
-.row-label, .col-label {
+.row-label {
   width: 24px;
   text-align: center;
   font-size: 12px;
@@ -778,6 +775,19 @@ onUnmounted(() => {
   display: flex;
   gap: 8px;
   margin-top: 8px;
+  margin-left: 32px; // 24px row-label + 8px gap
+}
+
+.row-label-placeholder {
+  display: none; // 不需要占位符了
+}
+
+.col-label {
+  width: 48px;
+  text-align: center;
+  font-size: 12px;
+  color: $text-muted;
+  flex-shrink: 0;
 }
 
 .seat {
@@ -864,10 +874,6 @@ onUnmounted(() => {
     
     &.power {
       background: $warning;
-      color: white;
-    }
-    &.window {
-      background: $blue;
       color: white;
     }
   }
