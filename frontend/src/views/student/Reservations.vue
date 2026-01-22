@@ -25,12 +25,43 @@ const pageSize = ref(10)
 // 状态配置
 const statusConfig: Record<string, { color: string, icon: any, bgColor: string }> = {
   PENDING: { color: '#FFCB2F', icon: Hourglass, bgColor: '#FFF8E1' },
+  CHECKED_IN: { color: '#3FB19E', icon: Play, bgColor: '#E8F5F3' },
   SIGNED_IN: { color: '#3FB19E', icon: Play, bgColor: '#E8F5F3' },
   LEAVING: { color: '#FF7A45', icon: Coffee, bgColor: '#FFF3E0' },
   COMPLETED: { color: '#4A9FFF', icon: CheckCircle, bgColor: '#E3F2FD' },
   CANCELLED: { color: '#9CA3AF', icon: XCircle, bgColor: '#F4F5F7' },
   NO_SHOW: { color: '#FF4D4F', icon: AlertCircle, bgColor: '#FEE2E2' },
   VIOLATION: { color: '#FF4D4F', icon: AlertCircle, bgColor: '#FEE2E2' }
+}
+
+// 判断是否为待签到状态
+function isPendingStatus(item: ReservationVO) {
+  return item.status === 'PENDING'
+}
+
+// 获取签到按钮提示
+function getSignInTip(item: ReservationVO) {
+  if (item.canSignIn) return '点击签到'
+  
+  // 计算距离签到时间还有多久
+  const startTime = new Date(item.startTime)
+  const now = new Date()
+  const diffMs = startTime.getTime() - now.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  
+  if (diffMins > 60 * 24) {
+    const days = Math.floor(diffMins / (60 * 24))
+    return `还有${days}天可签到`
+  } else if (diffMins > 60) {
+    const hours = Math.floor(diffMins / 60)
+    return `还有${hours}小时可签到`
+  } else if (diffMins > 15) {
+    return `还有${diffMins - 15}分钟可签到`
+  } else if (diffMins > -15) {
+    return '可以签到'
+  } else {
+    return '签到时间已过'
+  }
 }
 
 onMounted(() => {
@@ -200,9 +231,16 @@ function formatDuration(minutes: number | null) {
         </div>
         
         <div class="current-actions">
-          <el-button v-if="currentReservation.canSignIn" type="success" @click="handleSignIn(currentReservation)">
-            <Play :size="18" /> 签到
-          </el-button>
+          <!-- 待签到状态：显示签到按钮（可能禁用） -->
+          <el-tooltip v-if="isPendingStatus(currentReservation)" :content="getSignInTip(currentReservation)" placement="top">
+            <el-button 
+              type="success" 
+              :disabled="!currentReservation.canSignIn"
+              @click="handleSignIn(currentReservation)"
+            >
+              <Play :size="18" /> 签到
+            </el-button>
+          </el-tooltip>
           <el-button v-if="currentReservation.canSignOut" type="primary" @click="handleSignOut(currentReservation)">
             <Square :size="18" /> 签退
           </el-button>
@@ -261,7 +299,17 @@ function formatDuration(minutes: number | null) {
             </div>
             
             <div class="card-actions">
-              <el-button v-if="item.canSignIn" type="success" size="small" @click="handleSignIn(item)">签到</el-button>
+              <!-- 待签到状态：显示签到按钮（可能禁用） -->
+              <el-tooltip v-if="isPendingStatus(item)" :content="getSignInTip(item)" placement="top">
+                <el-button 
+                  type="success" 
+                  size="small" 
+                  :disabled="!item.canSignIn"
+                  @click="handleSignIn(item)"
+                >
+                  <Play :size="14" /> 签到
+                </el-button>
+              </el-tooltip>
               <el-button v-if="item.canSignOut" type="primary" size="small" @click="handleSignOut(item)">签退</el-button>
               <el-button v-if="item.canLeave" type="warning" size="small" @click="handleLeave(item)">暂离</el-button>
               <el-button v-if="item.canReturn" type="success" size="small" @click="handleReturn(item)">返回</el-button>

@@ -48,6 +48,7 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTimeSelect: typeof import('element-plus/es')['ElTimeSelect']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
     EmptyState: typeof import('./components/common/EmptyState.vue')['default']
     LoadingOverlay: typeof import('./components/common/LoadingOverlay.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
