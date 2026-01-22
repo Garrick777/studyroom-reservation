@@ -1,0 +1,258 @@
+// ============================================
+// 🎨 智慧自习室 - 设计变量
+// 风格: Bento Grid 现代风格
+// 图标: Lucide Icons
+// ============================================
+
+// --------------------------------------------
+// 颜色系统
+// --------------------------------------------
+
+// 主色 - 学术绿
+$primary: #3FB19E;
+$primary-dark: #2F8B7C;
+$primary-light: #E8F5F3;
+$primary-50: #F0FAF8;
+$primary-100: #D1F2EB;
+$primary-200: #A3E4D7;
+$primary-300: #76D7C4;
+$primary-400: #48C9B0;
+$primary-500: #3FB19E;
+$primary-600: #2F8B7C;
+$primary-700: #1F6E62;
+$primary-800: #145249;
+$primary-900: #0A3530;
+
+// 辅助色
+$accent: #FFCB2F;
+$accent-light: #FFF8E1;
+$accent-orange: #FF7A45;
+$purple: #7C5CFF;
+$purple-light: #EDE9FE;
+$pink: #FF6B9D;
+$blue: #4A9FFF;
+$blue-light: #DBEAFE;
+
+// 语义色
+$success: #00C48C;
+$success-light: #D1FAE5;
+$warning: #FFB020;
+$warning-light: #FEF3C7;
+$error: #FF4D4F;
+$error-light: #FEE2E2;
+$info: #4A9FFF;
+$info-light: #DBEAFE;
+
+// 中性色
+$gray-50: #FAFBFC;
+$gray-100: #F4F5F7;
+$gray-200: #E8EAED;
+$gray-300: #D1D5DB;
+$gray-400: #9CA3AF;
+$gray-500: #6B7280;
+$gray-600: #4B5563;
+$gray-700: #374151;
+$gray-800: #1F2937;
+$gray-900: #111827;
+
+// 背景色
+$bg-page: $gray-50;
+$bg-card: #FFFFFF;
+$bg-hover: $gray-100;
+
+// 文字色
+$text-primary: $gray-800;
+$text-secondary: $gray-600;
+$text-muted: $gray-500;
+$text-disabled: $gray-400;
+
+// 边框色
+$border-color: $gray-200;
+$border-light: $gray-100;
+
+// --------------------------------------------
+// 渐变预设
+// --------------------------------------------
+
+$gradient-hero: linear-gradient(135deg, #3FB19E 0%, #2DD4BF 50%, #4A9FFF 100%);
+$gradient-green: linear-gradient(135deg, #3FB19E, #2DD4BF);
+$gradient-orange: linear-gradient(135deg, #FF7A45, #FF9F45);
+$gradient-purple: linear-gradient(135deg, #7C5CFF, #A78BFA);
+$gradient-pink: linear-gradient(135deg, #FF6B9D, #F472B6);
+$gradient-blue: linear-gradient(135deg, #4A9FFF, #60A5FA);
+$gradient-yellow: linear-gradient(135deg, #FFCB2F, #FDE047);
+$gradient-dark: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+
+// 座位状态渐变
+$gradient-seat-available: linear-gradient(135deg, $primary-light, #D1FAE5);
+$gradient-seat-occupied: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+$gradient-seat-leaving: linear-gradient(135deg, #FEF3C7, #FDE68A);
+$gradient-seat-warning: linear-gradient(135deg, #FEE2E2, #FECACA);
+
+// 成就等级渐变
+$gradient-badge-common: linear-gradient(135deg, #B0BEC5, #78909C);
+$gradient-badge-rare: linear-gradient(135deg, #64B5F6, #1976D2);
+$gradient-badge-epic: linear-gradient(135deg, #BA68C8, #7B1FA2);
+$gradient-badge-legendary: linear-gradient(135deg, #FFD54F, #FF8F00);
+
+// 排名渐变
+$gradient-rank-gold: linear-gradient(135deg, #FFD700, #FFA500);
+$gradient-rank-silver: linear-gradient(135deg, #C0C0C0, #A0A0A0);
+$gradient-rank-bronze: linear-gradient(135deg, #CD7F32, #B87333);
+
+// --------------------------------------------
+// 圆角
+// --------------------------------------------
+
+$radius-xs: 8px;
+$radius-sm: 12px;
+$radius-md: 16px;
+$radius-lg: 24px;
+$radius-xl: 32px;
+$radius-full: 50%;
+
+// --------------------------------------------
+// 阴影
+// --------------------------------------------
+
+$shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+$shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+
+$shadow-card: 0 2px 16px rgba(0, 0, 0, 0.04);
+$shadow-card-hover: 0 12px 32px rgba(0, 0, 0, 0.08);
+$shadow-primary: 0 4px 16px rgba(63, 177, 158, 0.3);
+$shadow-purple: 0 4px 16px rgba(124, 92, 255, 0.3);
+$shadow-blue: 0 4px 16px rgba(74, 159, 255, 0.3);
+
+// --------------------------------------------
+// 间距
+// --------------------------------------------
+
+$spacing-0: 0;
+$spacing-1: 4px;
+$spacing-2: 8px;
+$spacing-3: 12px;
+$spacing-4: 16px;
+$spacing-5: 20px;
+$spacing-6: 24px;
+$spacing-8: 32px;
+$spacing-10: 40px;
+$spacing-12: 48px;
+$spacing-16: 64px;
+
+// --------------------------------------------
+// 字体
+// --------------------------------------------
+
+$font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+$font-mono: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+
+// 字号
+$font-size-xs: 11px;
+$font-size-sm: 13px;
+$font-size-base: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-3xl: 28px;
+$font-size-4xl: 36px;
+$font-size-5xl: 42px;
+
+// 字重
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-black: 900;
+
+// 行高
+$line-height-tight: 1.2;
+$line-height-normal: 1.5;
+$line-height-relaxed: 1.75;
+
+// --------------------------------------------
+// 过渡动画
+// --------------------------------------------
+
+$ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
+$ease-out: cubic-bezier(0, 0, 0.2, 1);
+$ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+$duration-fast: 0.15s;
+$duration-normal: 0.3s;
+$duration-slow: 0.4s;
+
+$transition-fast: all $duration-fast $ease-default;
+$transition-normal: all $duration-normal $ease-default;
+$transition-slow: all $duration-slow $ease-default;
+
+// --------------------------------------------
+// 响应式断点
+// --------------------------------------------
+
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-2xl: 1536px;
+
+// --------------------------------------------
+// Z-index 层级
+// --------------------------------------------
+
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-fixed: 300;
+$z-modal-backdrop: 400;
+$z-modal: 500;
+$z-popover: 600;
+$z-tooltip: 700;
+$z-toast: 800;
+
+// --------------------------------------------
+// 图标尺寸
+// --------------------------------------------
+
+$icon-xs: 14px;
+$icon-sm: 16px;
+$icon-md: 20px;
+$icon-lg: 24px;
+$icon-xl: 28px;
+$icon-2xl: 32px;
+
+// --------------------------------------------
+// 座位状态
+// --------------------------------------------
+
+$seat-available-bg: $gradient-seat-available;
+$seat-available-border: $primary;
+$seat-available-text: $primary;
+
+$seat-occupied-bg: $gradient-seat-occupied;
+$seat-occupied-border: $blue;
+$seat-occupied-text: $blue;
+
+$seat-leaving-bg: $gradient-seat-leaving;
+$seat-leaving-border: $warning;
+$seat-leaving-text: $warning;
+
+$seat-warning-bg: $gradient-seat-warning;
+$seat-warning-border: $error;
+$seat-warning-text: $error;
+
+$seat-disabled-bg: $gray-100;
+$seat-disabled-border: $gray-200;
+$seat-disabled-text: $gray-400;
+
+// 座位状态简单背景色 (用于座位图)
+$seat-available: #E8F5E9;
+$seat-occupied: #FFCDD2;
+$seat-in-use: #FFE0B2;
+$seat-leaving: #FFF9C4;
+$seat-unavailable: $gray-200;

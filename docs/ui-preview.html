@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智慧自习室 - UI配色预览</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* 主色 */
+      --primary-50: #E8F5F3;
+      --primary-100: #C5E7E2;
+      --primary-200: #9FD8CF;
+      --primary-300: #79C9BC;
+      --primary-400: #5CBDAD;
+      --primary-500: #3FB19E;
+      --primary-600: #38A08F;
+      --primary-700: #2F8B7C;
+      --primary-800: #27776A;
+      --primary-900: #1A554C;
+      
+      /* 辅助色 */
+      --secondary-50: #EEF2F7;
+      --secondary-100: #D5DFEB;
+      --secondary-200: #B9CADD;
+      --secondary-300: #9DB5CF;
+      --secondary-400: #87A5C4;
+      --secondary-500: #7195B9;
+      --secondary-600: #6486AA;
+      --secondary-700: #547296;
+      --secondary-800: #455F82;
+      --secondary-900: #2F4260;
+      
+      /* 强调色 */
+      --accent-50: #FFF8E6;
+      --accent-100: #FFEFC1;
+      --accent-200: #FFE598;
+      --accent-300: #FFDB6F;
+      --accent-400: #FFD34F;
+      --accent-500: #FFCB2F;
+      --accent-600: #FFB81C;
+      --accent-700: #FFA000;
+      --accent-800: #F08800;
+      --accent-900: #DC6B00;
+      
+      /* 中性色 */
+      --gray-50: #FAFBFC;
+      --gray-100: #F4F6F8;
+      --gray-200: #E9ECF0;
+      --gray-300: #D3D9E0;
+      --gray-400: #A8B3C0;
+      --gray-500: #7D8B9A;
+      --gray-600: #5C6A7A;
+      --gray-700: #445062;
+      --gray-800: #2D3848;
+      --gray-900: #1A2332;
+      
+      /* 语义色 */
+      --success: #34C759;
+      --success-light: #E8F8EE;
+      --warning: #FFAB00;
+      --warning-light: #FFF8E6;
+      --error: #FF3B30;
+      --error-light: #FFEBEE;
+      --info: #2196F3;
+      --info-light: #E3F2FD;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--gray-500);
+      font-size: 16px;
+      margin-bottom: 48px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+    }
+
+    /* 色板 */
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+    }
+
+    .color-item {
+      text-align: center;
+    }
+
+    .color-swatch {
+      height: 60px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .color-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-700);
+    }
+
+    .color-hex {
+      font-size: 11px;
+      color: var(--gray-500);
+      font-family: monospace;
+    }
+
+    /* 色阶行 */
+    .color-scale {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    .color-scale-item {
+      flex: 1;
+      height: 50px;
+      border-radius: 8px;
+      display: flex;
+      align-items: flex-end;
+      padding: 4px;
+    }
+
+    .color-scale-item:first-child {
+      border-radius: 8px 4px 4px 8px;
+    }
+
+    .color-scale-item:last-child {
+      border-radius: 4px 8px 8px 4px;
+    }
+
+    .color-scale-label {
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    /* 按钮展示 */
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+      color: white;
+      box-shadow: 0 4px 14px rgba(63, 177, 158, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(63, 177, 158, 0.45);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--primary-500);
+      border: 2px solid var(--primary-500);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--gray-600);
+    }
+
+    .btn-ghost:hover {
+      background: var(--gray-100);
+    }
+
+    .btn-danger {
+      background: var(--error);
+      color: white;
+    }
+
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent-500) 0%, var(--accent-600) 100%);
+      color: var(--gray-900);
+      box-shadow: 0 4px 14px rgba(255, 203, 47, 0.35);
+    }
+
+    /* 卡片展示 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-highlight {
+      border-left: 4px solid var(--primary-500);
+    }
+
+    .card-success {
+      border-left: 4px solid var(--success);
+      background: var(--success-light);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--gray-800);
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--gray-500);
+    }
+
+    /* 标签 */
+    .tag-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tag {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .tag-pending { background: var(--warning-light); color: #CC8800; }
+    .tag-success { background: var(--success-light); color: #248A3D; }
+    .tag-error { background: var(--error-light); color: #C62828; }
+    .tag-info { background: var(--info-light); color: #1565C0; }
+    .tag-power { background: #FFF3E0; color: #E65100; }
+    .tag-window { background: #E3F2FD; color: #1565C0; }
+
+    /* 成就徽章 */
+    .badge-grid {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .achievement-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      transition: transform 0.3s ease;
+    }
+
+    .achievement-badge:hover {
+      transform: scale(1.1);
+    }
+
+    .badge-common {
+      background: linear-gradient(145deg, #f0f0f0 0%, #d9d9d9 100%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge-rare {
+      background: linear-gradient(145deg, #64B5F6 0%, #1976D2 100%);
+      box-shadow: 0 4px 16px rgba(25, 118, 210, 0.3);
+    }
+
+    .badge-epic {
+      background: linear-gradient(145deg, #BA68C8 0%, #7B1FA2 100%);
+      box-shadow: 0 4px 16px rgba(123, 31, 162, 0.3);
+    }
+
+    .badge-legendary {
+      background: linear-gradient(145deg, #FFD54F 0%, #FF8F00 100%);
+      box-shadow: 0 4px 20px rgba(255, 143, 0, 0.4);
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 4px 20px rgba(255, 143, 0, 0.4); }
+      50% { box-shadow: 0 4px 30px rgba(255, 143, 0, 0.6); }
+    }
+
+    .badge-label {
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-600);
+      margin-top: 8px;
+    }
+
+    /* 座位图预览 */
+    .seat-demo {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .seat {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .seat-available {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+
+    .seat-available:hover {
+      background: var(--primary-100);
+      border-color: var(--primary-400);
+      transform: scale(1.08);
+    }
+
+    .seat-selected {
+      background: var(--primary-500);
+      color: white;
+      box-shadow: 0 4px 14px rgba(63, 177, 158, 0.35);
+    }
+
+    .seat-occupied {
+      background: #FFCDD2;
+      color: #C62828;
+      cursor: not-allowed;
+    }
+
+    .seat-using {
+      background: #FFE0B2;
+      color: #E65100;
+      cursor: not-allowed;
+    }
+
+    .seat-leaving {
+      background: #FFF9C4;
+      color: #F9A825;
+      cursor: not-allowed;
+      animation: pulse 2s infinite;
+    }
+
+    .seat-disabled {
+      background: #E0E0E0;
+      color: #9E9E9E;
+      cursor: not-allowed;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* 排行榜预览 */
+    .ranking-list {
+      max-width: 500px;
+    }
+
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border-bottom: 1px solid var(--gray-100);
+      transition: background 0.2s ease;
+    }
+
+    .ranking-item:hover {
+      background: var(--gray-50);
+    }
+
+    .ranking-item:first-child {
+      background: linear-gradient(90deg, #FFF8E1 0%, white 100%);
+    }
+
+    .rank-num {
+      width: 32px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gray-400);
+    }
+
+    .ranking-item:nth-child(1) .rank-num { color: #FFD700; }
+    .ranking-item:nth-child(2) .rank-num { color: #C0C0C0; }
+    .ranking-item:nth-child(3) .rank-num { color: #CD7F32; }
+
+    .rank-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary-100);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-right: 12px;
+      border: 2px solid var(--gray-200);
+    }
+
+    .ranking-item:first-child .rank-avatar {
+      border-color: #FFD700;
+    }
+
+    .rank-info {
+      flex: 1;
+    }
+
+    .rank-name {
+      font-weight: 500;
+      color: var(--gray-800);
+    }
+
+    .rank-meta {
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    .rank-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary-500);
+    }
+
+    /* 统计卡片 */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .stat-icon.green { background: var(--success-light); }
+    .stat-icon.blue { background: var(--info-light); }
+    .stat-icon.orange { background: var(--warning-light); }
+    .stat-icon.purple { background: #F3E5F5; }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    /* 深色模式切换 */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background: var(--gray-800);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+    }
+
+    /* 页脚 */
+    .footer {
+      text-align: center;
+      color: var(--gray-500);
+      font-size: 13px;
+      padding: 40px 0;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌙 深色模式</button>
+  
+  <div class="container">
+    <h1>🎨 智慧自习室 UI配色预览</h1>
+    <p class="subtitle">设计风格：学术清新 · 专注高效</p>
+
+    <!-- 主色系 -->
+    <div class="section">
+      <h2>🌿 主色系 - 学院绿</h2>
+      <div class="color-scale">
+        <div class="color-scale-item" style="background: var(--primary-50);"><span class="color-scale-label" style="color: var(--primary-900);">50</span></div>
+        <div class="color-scale-item" style="background: var(--primary-100);"><span class="color-scale-label" style="color: var(--primary-900);">100</span></div>
+        <div class="color-scale-item" style="background: var(--primary-200);"><span class="color-scale-label" style="color: var(--primary-900);">200</span></div>
+        <div class="color-scale-item" style="background: var(--primary-300);"><span class="color-scale-label" style="color: var(--primary-900);">300</span></div>
+        <div class="color-scale-item" style="background: var(--primary-400);"><span class="color-scale-label" style="color: white;">400</span></div>
+        <div class="color-scale-item" style="background: var(--primary-500);"><span class="color-scale-label" style="color: white;">500</span></div>
+        <div class="color-scale-item" style="background: var(--primary-600);"><span class="color-scale-label" style="color: white;">600</span></div>
+        <div class="color-scale-item" style="background: var(--primary-700);"><span class="color-scale-label" style="color: white;">700</span></div>
+        <div class="color-scale-item" style="background: var(--primary-800);"><span class="color-scale-label" style="color: white;">800</span></div>
+        <div class="color-scale-item" style="background: var(--primary-900);"><span class="color-scale-label" style="color: white;">900</span></div>
+      </div>
+      <p style="color: var(--gray-600); font-size: 14px;">主色 #3FB19E 灵感来源于图书馆的静谧氛围与自然学习环境，传递专注与宁静。</p>
+    </div>
+
+    <!-- 辅助色系 -->
+    <div class="section">
+      <h2>💙 辅助色系 - 静谧蓝</h2>
+      <div class="color-scale">
+        <div class="color-scale-item" style="background: var(--secondary-50);"><span class="color-scale-label" style="color: var(--secondary-900);">50</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-100);"><span class="color-scale-label" style="color: var(--secondary-900);">100</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-200);"><span class="color-scale-label" style="color: var(--secondary-900);">200</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-300);"><span class="color-scale-label" style="color: var(--secondary-900);">300</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-400);"><span class="color-scale-label" style="color: white;">400</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-500);"><span class="color-scale-label" style="color: white;">500</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-600);"><span class="color-scale-label" style="color: white;">600</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-700);"><span class="color-scale-label" style="color: white;">700</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-800);"><span class="color-scale-label" style="color: white;">800</span></div>
+        <div class="color-scale-item" style="background: var(--secondary-900);"><span class="color-scale-label" style="color: white;">900</span></div>
+      </div>
+    </div>
+
+    <!-- 强调色系 -->
+    <div class="section">
+      <h2>✨ 强调色系 - 活力金</h2>
+      <div class="color-scale">
+        <div class="color-scale-item" style="background: var(--accent-50);"><span class="color-scale-label" style="color: var(--accent-900);">50</span></div>
+        <div class="color-scale-item" style="background: var(--accent-100);"><span class="color-scale-label" style="color: var(--accent-900);">100</span></div>
+        <div class="color-scale-item" style="background: var(--accent-200);"><span class="color-scale-label" style="color: var(--accent-900);">200</span></div>
+        <div class="color-scale-item" style="background: var(--accent-300);"><span class="color-scale-label" style="color: var(--accent-900);">300</span></div>
+        <div class="color-scale-item" style="background: var(--accent-400);"><span class="color-scale-label" style="color: var(--accent-900);">400</span></div>
+        <div class="color-scale-item" style="background: var(--accent-500);"><span class="color-scale-label" style="color: var(--accent-900);">500</span></div>
+        <div class="color-scale-item" style="background: var(--accent-600);"><span class="color-scale-label" style="color: white;">600</span></div>
+        <div class="color-scale-item" style="background: var(--accent-700);"><span class="color-scale-label" style="color: white;">700</span></div>
+        <div class="color-scale-item" style="background: var(--accent-800);"><span class="color-scale-label" style="color: white;">800</span></div>
+        <div class="color-scale-item" style="background: var(--accent-900);"><span class="color-scale-label" style="color: white;">900</span></div>
+      </div>
+      <p style="color: var(--gray-600); font-size: 14px;">用于积分、成就、排名等需要突出的激励元素。</p>
+    </div>
+
+    <!-- 语义色 -->
+    <div class="section">
+      <h2>🚦 语义色</h2>
+      <div class="color-palette" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="color-item">
+          <div class="color-swatch" style="background: var(--success);"></div>
+          <div class="color-name">成功</div>
+          <div class="color-hex">#34C759</div>
+        </div>
+        <div class="color-item">
+          <div class="color-swatch" style="background: var(--warning);"></div>
+          <div class="color-name">警告</div>
+          <div class="color-hex">#FFAB00</div>
+        </div>
+        <div class="color-item">
+          <div class="color-swatch" style="background: var(--error);"></div>
+          <div class="color-name">错误</div>
+          <div class="color-hex">#FF3B30</div>
+        </div>
+        <div class="color-item">
+          <div class="color-swatch" style="background: var(--info);"></div>
+          <div class="color-name">信息</div>
+          <div class="color-hex">#2196F3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 按钮 -->
+    <div class="section">
+      <h2>🔘 按钮样式</h2>
+      <div class="button-grid">
+        <button class="btn btn-primary">主要按钮</button>
+        <button class="btn btn-secondary">次要按钮</button>
+        <button class="btn btn-ghost">幽灵按钮</button>
+        <button class="btn btn-danger">危险按钮</button>
+        <button class="btn btn-accent">强调按钮</button>
+      </div>
+    </div>
+
+    <!-- 标签 -->
+    <div class="section">
+      <h2>🏷️ 标签样式</h2>
+      <div class="tag-grid">
+        <span class="tag tag-pending">待签到</span>
+        <span class="tag tag-success">已完成</span>
+        <span class="tag tag-error">已违约</span>
+        <span class="tag tag-info">已取消</span>
+        <span class="tag tag-power">⚡ 有电源</span>
+        <span class="tag tag-window">🪟 靠窗</span>
+      </div>
+    </div>
+
+    <!-- 座位状态 -->
+    <div class="section">
+      <h2>🪑 座位状态</h2>
+      <div class="seat-demo">
+        <div>
+          <div class="seat seat-available">A01</div>
+          <div class="badge-label">可预约</div>
+        </div>
+        <div>
+          <div class="seat seat-selected">A02</div>
+          <div class="badge-label">已选中</div>
+        </div>
+        <div>
+          <div class="seat seat-occupied">A03</div>
+          <div class="badge-label">已占用</div>
+        </div>
+        <div>
+          <div class="seat seat-using">A04</div>
+          <div class="badge-label">使用中</div>
+        </div>
+        <div>
+          <div class="seat seat-leaving">A05</div>
+          <div class="badge-label">暂离中</div>
+        </div>
+        <div>
+          <div class="seat seat-disabled">A06</div>
+          <div class="badge-label">不可用</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 成就徽章 -->
+    <div class="section">
+      <h2>🏆 成就徽章</h2>
+      <div class="badge-grid">
+        <div>
+          <div class="achievement-badge badge-common">🎓</div>
+          <div class="badge-label">普通</div>
+        </div>
+        <div>
+          <div class="achievement-badge badge-rare">📚</div>
+          <div class="badge-label">稀有</div>
+        </div>
+        <div>
+          <div class="achievement-badge badge-epic">🏆</div>
+          <div class="badge-label">史诗</div>
+        </div>
+        <div>
+          <div class="achievement-badge badge-legendary">👑</div>
+          <div class="badge-label">传说</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡片 -->
+    <div class="section">
+      <h2>📦 卡片样式</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-title">图书馆A101自习室</div>
+          <div class="card-desc">可用座位 25/60 · ⭐ 4.8</div>
+        </div>
+        <div class="card card-highlight">
+          <div class="card-title">今日预约</div>
+          <div class="card-desc">座位 B08 · 12:00-14:00</div>
+        </div>
+        <div class="card card-success">
+          <div class="card-title">✓ 签到成功</div>
+          <div class="card-desc">获得 +20 积分 +40 经验</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 统计卡片 -->
+    <div class="section">
+      <h2>📊 统计数据</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-icon green">📅</div>
+          <div>
+            <div class="stat-label">今日预约</div>
+            <div class="stat-value">56</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue">⏱️</div>
+          <div>
+            <div class="stat-label">学习时长</div>
+            <div class="stat-value">8.5h</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">🔥</div>
+          <div>
+            <div class="stat-label">连续打卡</div>
+            <div class="stat-value">15天</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">⭐</div>
+          <div>
+            <div class="stat-label">信用积分</div>
+            <div class="stat-value">85</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 排行榜 -->
+    <div class="section">
+      <h2>🏅 排行榜</h2>
+      <div class="ranking-list">
+        <div class="ranking-item">
+          <div class="rank-num">1</div>
+          <div class="rank-avatar">😎</div>
+          <div class="rank-info">
+            <div class="rank-name">学霸小王</div>
+            <div class="rank-meta">计算机学院</div>
+          </div>
+          <div class="rank-value">42.5h</div>
+        </div>
+        <div class="ranking-item">
+          <div class="rank-num">2</div>
+          <div class="rank-avatar">🤓</div>
+          <div class="rank-info">
+            <div class="rank-name">努力李四</div>
+            <div class="rank-meta">信息学院</div>
+          </div>
+          <div class="rank-value">38.0h</div>
+        </div>
+        <div class="ranking-item">
+          <div class="rank-num">3</div>
+          <div class="rank-avatar">📖</div>
+          <div class="rank-info">
+            <div class="rank-name">图书馆常客</div>
+            <div class="rank-meta">经济学院</div>
+          </div>
+          <div class="rank-value">35.5h</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      智慧自习室座位预约系统 · UI设计规范 v1.0
+    </div>
+  </div>
+
+  <script>
+    let isDark = false;
+    function toggleTheme() {
+      isDark = !isDark;
+      if (isDark) {
+        document.body.style.background = '#0D1117';
+        document.body.style.color = '#E6EDF3';
+        document.querySelector('.theme-toggle').textContent = '☀️ 浅色模式';
+      } else {
+        document.body.style.background = '#FAFBFC';
+        document.body.style.color = '#2D3848';
+        document.querySelector('.theme-toggle').textContent = '🌙 深色模式';
+      }
+    }
+  </script>
+</body>
+</html>

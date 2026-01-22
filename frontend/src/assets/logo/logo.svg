@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3FB19E"/>
+      <stop offset="100%" style="stop-color:#2F8B7C"/>
+    </linearGradient>
+  </defs>
+  <!-- Book base -->
+  <path d="M30 50C30 40 38 35 50 35h100c12 0 20 5 20 15v100c0 10-8 15-20 15H50c-12 0-20-5-20-15V50z" fill="url(#logoGrad)"/>
+  <!-- Book pages -->
+  <path d="M40 55h120v90c0 5-5 10-10 10H50c-5 0-10-5-10-10V55z" fill="#FFF"/>
+  <!-- Seat icon -->
+  <rect x="70" y="85" width="60" height="8" rx="2" fill="#3FB19E"/>
+  <path d="M75 95v20c0 3 2 5 5 5h40c3 0 5-2 5-5V95" stroke="#3FB19E" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <rect x="78" y="118" width="8" height="12" rx="2" fill="#3FB19E"/>
+  <rect x="114" y="118" width="8" height="12" rx="2" fill="#3FB19E"/>
+  <!-- Sparkle -->
+  <path d="M155 45l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#FFCB2F"/>
+  <path d="M45 140l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#FFCB2F"/>
+</svg>

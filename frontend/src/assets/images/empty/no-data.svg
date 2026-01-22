@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <circle cx="100" cy="100" r="80" fill="#F5F5F5"/>
+  <rect x="60" y="70" width="80" height="60" rx="4" fill="#E0E0E0"/>
+  <rect x="70" y="80" width="60" height="4" rx="2" fill="#BDBDBD"/>
+  <rect x="70" y="90" width="45" height="4" rx="2" fill="#BDBDBD"/>
+  <rect x="70" y="100" width="50" height="4" rx="2" fill="#BDBDBD"/>
+  <rect x="70" y="110" width="35" height="4" rx="2" fill="#BDBDBD"/>
+  <circle cx="140" cy="140" r="30" fill="#3FB19E" opacity="0.2"/>
+  <path d="M130 140l6 6 14-14" stroke="#3FB19E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0"/>
+  <text x="100" y="175" text-anchor="middle" fill="#9E9E9E" font-family="sans-serif" font-size="12">暂无数据</text>
+</svg>

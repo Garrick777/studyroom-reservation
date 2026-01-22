@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="nightBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A237E"/>
+      <stop offset="100%" style="stop-color:#311B92"/>
+    </linearGradient>
+    <linearGradient id="lampLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF9C4"/>
+      <stop offset="100%" style="stop-color:#FFECB3;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景 - 夜空 -->
+  <rect width="400" height="300" fill="url(#nightBg)"/>
+  <!-- 星星 -->
+  <circle cx="50" cy="40" r="2" fill="#FFF"/>
+  <circle cx="120" cy="25" r="1.5" fill="#FFF"/>
+  <circle cx="200" cy="35" r="2" fill="#FFF"/>
+  <circle cx="280" cy="20" r="1" fill="#FFF"/>
+  <circle cx="350" cy="45" r="2" fill="#FFF"/>
+  <circle cx="80" cy="70" r="1" fill="#FFF"/>
+  <circle cx="320" cy="60" r="1.5" fill="#FFF"/>
+  <!-- 月亮 -->
+  <circle cx="350" cy="50" r="25" fill="#FDD835"/>
+  <circle cx="340" cy="45" r="22" fill="url(#nightBg)"/>
+  <!-- 24H 标志 -->
+  <rect x="150" y="20" width="100" height="40" fill="#FF5722" rx="8"/>
+  <text x="200" y="48" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">24H</text>
+  <!-- 地板 -->
+  <rect x="0" y="220" width="400" height="80" fill="#37474F"/>
+  <!-- 桌子带灯光 -->
+  <ellipse cx="100" cy="180" rx="50" ry="30" fill="url(#lampLight)"/>
+  <rect x="60" y="150" width="80" height="40" fill="#5D4037" rx="5"/>
+  <rect x="95" y="120" width="10" height="30" fill="#795548"/>
+  <ellipse cx="100" cy="115" rx="20" ry="8" fill="#FFEB3B"/>
+  <!-- 电脑 -->
+  <rect x="75" y="135" width="30" height="20" fill="#263238" rx="2"/>
+  <rect x="78" y="138" width="24" height="14" fill="#4FC3F7"/>
+  <!-- 桌子2 -->
+  <ellipse cx="250" cy="180" rx="50" ry="30" fill="url(#lampLight)"/>
+  <rect x="210" y="150" width="80" height="40" fill="#5D4037" rx="5"/>
+  <rect x="245" y="120" width="10" height="30" fill="#795548"/>
+  <ellipse cx="250" cy="115" rx="20" ry="8" fill="#FFEB3B"/>
+  <!-- 书本 -->
+  <rect x="225" y="140" width="25" height="5" fill="#E91E63"/>
+  <rect x="255" y="138" width="20" height="7" fill="#2196F3"/>
+  <!-- 自动售货机 -->
+  <rect x="340" y="130" width="50" height="90" fill="#1976D2" rx="5"/>
+  <rect x="345" y="140" width="40" height="50" fill="#90CAF9"/>
+  <rect x="350" y="145" width="12" height="10" fill="#F44336" rx="2"/>
+  <rect x="365" y="145" width="12" height="10" fill="#4CAF50" rx="2"/>
+  <rect x="350" y="160" width="12" height="10" fill="#FF9800" rx="2"/>
+  <rect x="365" y="160" width="12" height="10" fill="#9C27B0" rx="2"/>
+  <rect x="350" y="175" width="12" height="10" fill="#00BCD4" rx="2"/>
+  <rect x="365" y="175" width="12" height="10" fill="#FFEB3B" rx="2"/>
+  <rect x="350" y="195" width="30" height="15" fill="#263238" rx="3"/>
+  <!-- 椅子 -->
+  <ellipse cx="100" cy="200" rx="15" ry="6" fill="#FFA726"/>
+  <ellipse cx="250" cy="200" rx="15" ry="6" fill="#FFA726"/>
+  <!-- 咖啡标志 -->
+  <circle cx="30" cy="150" r="20" fill="#6D4C41"/>
+  <text x="30" y="156" font-family="Arial" font-size="16" fill="white" text-anchor="middle">☕</text>
+  <!-- 文字标签 -->
+  <rect x="130" y="260" width="140" height="30" fill="#FF5722" rx="15"/>
+  <text x="200" y="280" font-family="Arial" font-size="14" fill="white" text-anchor="middle">24小时自习室</text>
+</svg>

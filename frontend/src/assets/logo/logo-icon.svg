@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <defs>
+    <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3FB19E"/>
+      <stop offset="100%" style="stop-color:#2F8B7C"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="22" fill="url(#iconGrad)"/>
+  <!-- Simplified seat -->
+  <rect x="14" y="18" width="20" height="4" rx="1" fill="#FFF"/>
+  <path d="M16 24v8c0 1.5 1 2.5 2.5 2.5h11c1.5 0 2.5-1 2.5-2.5v-8" stroke="#FFF" stroke-width="3" fill="none" stroke-linecap="round"/>
+</svg>

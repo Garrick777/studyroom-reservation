@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucide Icons - 项目图标速查</title>
+  <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.0.0/dist/iconify-icon.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #3FB19E;
+      --primary-dark: #2F8B7C;
+      --accent: #FFCB2F;
+      --success: #34C759;
+      --warning: #FFAB00;
+      --error: #FF3B30;
+      --info: #2196F3;
+      --bg-dark: #0F1520;
+    }
+
+    body {
+      font-family: "Noto Sans SC", -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0F1520 0%, #1A2332 100%);
+      min-height: 100vh;
+      color: white;
+      padding: 40px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    h1 iconify-icon {
+      color: var(--primary);
+    }
+
+    .subtitle {
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 16px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-top: 24px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .category {
+      margin-bottom: 40px;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .category-header iconify-icon {
+      font-size: 24px;
+      color: var(--accent);
+    }
+
+    .category-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .category-count {
+      margin-left: auto;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.4);
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+    }
+
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .icon-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .icon-card:hover {
+      background: rgba(63, 177, 158, 0.1);
+      border-color: var(--primary);
+      transform: translateY(-4px);
+    }
+
+    .icon-card:hover .icon-display {
+      color: var(--primary);
+      transform: scale(1.15);
+    }
+
+    .icon-card:hover .copy-hint {
+      opacity: 1;
+    }
+
+    .icon-display {
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: rgba(255, 255, 255, 0.85);
+      transition: all 0.3s ease;
+    }
+
+    .icon-name {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .icon-usage {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-top: 6px;
+    }
+
+    .copy-hint {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 10px;
+      color: var(--primary);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    /* 特殊图标样式 */
+    .icon-card.success .icon-display { color: var(--success); }
+    .icon-card.warning .icon-display { color: var(--warning); }
+    .icon-card.error .icon-display { color: var(--error); }
+    .icon-card.info .icon-display { color: var(--info); }
+    .icon-card.accent .icon-display { color: var(--accent); }
+    .icon-card.primary .icon-display { color: var(--primary); }
+
+    /* 旋转动画 */
+    .icon-card.spin .icon-display iconify-icon {
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* 示例区域 */
+    .examples-section {
+      background: linear-gradient(135deg, rgba(63, 177, 158, 0.1) 0%, rgba(255, 203, 47, 0.05) 100%);
+      border: 1px solid rgba(63, 177, 158, 0.2);
+      border-radius: 24px;
+      padding: 32px;
+      margin-bottom: 40px;
+    }
+
+    .example-title {
+      font-size: 18px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .example-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .example-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .example-label {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 12px;
+    }
+
+    /* 导航示例 */
+    .nav-demo {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+    }
+
+    .nav-item:hover {
+      background: rgba(63, 177, 158, 0.15);
+      color: white;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-color: transparent;
+      color: white;
+    }
+
+    /* 按钮示例 */
+    .btn-demo {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .demo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .demo-btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+    }
+
+    .demo-btn.outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .demo-btn.ghost {
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .demo-btn.danger {
+      background: linear-gradient(135deg, var(--error), #D32F2F);
+      color: white;
+    }
+
+    .demo-btn.success {
+      background: linear-gradient(135deg, var(--success), #2E7D32);
+      color: white;
+    }
+
+    /* 状态标签 */
+    .status-demo {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .status-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .status-tag.success {
+      background: rgba(52, 199, 89, 0.15);
+      color: var(--success);
+    }
+
+    .status-tag.warning {
+      background: rgba(255, 171, 0, 0.15);
+      color: var(--warning);
+    }
+
+    .status-tag.error {
+      background: rgba(255, 59, 48, 0.15);
+      color: var(--error);
+    }
+
+    .status-tag.info {
+      background: rgba(33, 150, 243, 0.15);
+      color: var(--info);
+    }
+
+    /* 代码块 */
+    .code-block {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 24px;
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+
+    .code-comment { color: #6A9955; }
+    .code-keyword { color: #C586C0; }
+    .code-string { color: #CE9178; }
+    .code-tag { color: #569CD6; }
+    .code-attr { color: #9CDCFE; }
+
+    /* 底部提示 */
+    .footer-tip {
+      text-align: center;
+      padding: 24px;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 13px;
+    }
+
+    .footer-tip a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .footer-tip a:hover {
+      text-decoration: underline;
+    }
+
+    /* Toast 提示 */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--success);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>
+      <iconify-icon icon="lucide:feather"></iconify-icon>
+      Lucide Icons 项目图标速查
+    </h1>
+    <p class="subtitle">点击图标复制导入代码</p>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value">80+</div>
+        <div class="stat-label">项目常用图标</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">9</div>
+        <div class="stat-label">分类</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">Vue 3</div>
+        <div class="stat-label">框架支持</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 实际应用示例 -->
+  <div class="examples-section">
+    <h2 class="example-title">
+      <iconify-icon icon="lucide:sparkles"></iconify-icon>
+      实际应用效果
+    </h2>
+
+    <div class="example-label">🧭 侧边导航</div>
+    <div class="nav-demo">
+      <div class="nav-item active">
+        <iconify-icon icon="lucide:home"></iconify-icon>
+        首页
+      </div>
+      <div class="nav-item">
+        <iconify-icon icon="lucide:book-open"></iconify-icon>
+        自习室
+      </div>
+      <div class="nav-item">
+        <iconify-icon icon="lucide:calendar"></iconify-icon>
+        我的预约
+      </div>
+      <div class="nav-item">
+        <iconify-icon icon="lucide:target"></iconify-icon>
+        学习目标
+      </div>
+      <div class="nav-item">
+        <iconify-icon icon="lucide:trophy"></iconify-icon>
+        成就中心
+      </div>
+      <div class="nav-item">
+        <iconify-icon icon="lucide:users"></iconify-icon>
+        好友
+      </div>
+      <div class="nav-item">
+        <iconify-icon icon="lucide:shopping-cart"></iconify-icon>
+        积分商城
+      </div>
+    </div>
+
+    <div class="example-label" style="margin-top: 24px;">🎯 操作按钮</div>
+    <div class="btn-demo">
+      <button class="demo-btn primary">
+        <iconify-icon icon="lucide:calendar-plus"></iconify-icon>
+        立即预约
+      </button>
+      <button class="demo-btn success">
+        <iconify-icon icon="lucide:scan-line"></iconify-icon>
+        扫码签到
+      </button>
+      <button class="demo-btn outline">
+        <iconify-icon icon="lucide:log-out"></iconify-icon>
+        签退
+      </button>
+      <button class="demo-btn ghost">
+        <iconify-icon icon="lucide:clock-3"></iconify-icon>
+        暂离
+      </button>
+      <button class="demo-btn danger">
+        <iconify-icon icon="lucide:calendar-x"></iconify-icon>
+        取消预约
+      </button>
+    </div>
+
+    <div class="example-label" style="margin-top: 24px;">✅ 状态标签</div>
+    <div class="status-demo">
+      <div class="status-tag success">
+        <iconify-icon icon="lucide:check-circle"></iconify-icon>
+        预约成功
+      </div>
+      <div class="status-tag warning">
+        <iconify-icon icon="lucide:alert-triangle"></iconify-icon>
+        暂离中
+      </div>
+      <div class="status-tag error">
+        <iconify-icon icon="lucide:x-circle"></iconify-icon>
+        已违约
+      </div>
+      <div class="status-tag info">
+        <iconify-icon icon="lucide:info"></iconify-icon>
+        学习中
+      </div>
+    </div>
+  </div>
+
+  <!-- 导航图标 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:compass"></iconify-icon>
+      <span class="category-title">导航图标</span>
+      <span class="category-count">13个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card primary" onclick="copyIcon('Home')">
+        <div class="icon-display"><iconify-icon icon="lucide:home"></iconify-icon></div>
+        <div class="icon-name">Home</div>
+        <div class="icon-usage">首页</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('BookOpen')">
+        <div class="icon-display"><iconify-icon icon="lucide:book-open"></iconify-icon></div>
+        <div class="icon-name">BookOpen</div>
+        <div class="icon-usage">自习室</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Calendar')">
+        <div class="icon-display"><iconify-icon icon="lucide:calendar"></iconify-icon></div>
+        <div class="icon-name">Calendar</div>
+        <div class="icon-usage">预约</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Target')">
+        <div class="icon-display"><iconify-icon icon="lucide:target"></iconify-icon></div>
+        <div class="icon-name">Target</div>
+        <div class="icon-usage">目标</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card accent" onclick="copyIcon('Trophy')">
+        <div class="icon-display"><iconify-icon icon="lucide:trophy"></iconify-icon></div>
+        <div class="icon-name">Trophy</div>
+        <div class="icon-usage">成就</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Users')">
+        <div class="icon-display"><iconify-icon icon="lucide:users"></iconify-icon></div>
+        <div class="icon-name">Users</div>
+        <div class="icon-usage">好友</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('UsersRound')">
+        <div class="icon-display"><iconify-icon icon="lucide:users-round"></iconify-icon></div>
+        <div class="icon-name">UsersRound</div>
+        <div class="icon-usage">小组</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('ShoppingCart')">
+        <div class="icon-display"><iconify-icon icon="lucide:shopping-cart"></iconify-icon></div>
+        <div class="icon-name">ShoppingCart</div>
+        <div class="icon-usage">商城</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Medal')">
+        <div class="icon-display"><iconify-icon icon="lucide:medal"></iconify-icon></div>
+        <div class="icon-name">Medal</div>
+        <div class="icon-usage">排行榜</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Bell')">
+        <div class="icon-display"><iconify-icon icon="lucide:bell"></iconify-icon></div>
+        <div class="icon-name">Bell</div>
+        <div class="icon-usage">通知</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('MessageCircle')">
+        <div class="icon-display"><iconify-icon icon="lucide:message-circle"></iconify-icon></div>
+        <div class="icon-name">MessageCircle</div>
+        <div class="icon-usage">消息</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Settings')">
+        <div class="icon-display"><iconify-icon icon="lucide:settings"></iconify-icon></div>
+        <div class="icon-name">Settings</div>
+        <div class="icon-usage">设置</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+      <div class="icon-card" onclick="copyIcon('User')">
+        <div class="icon-display"><iconify-icon icon="lucide:user"></iconify-icon></div>
+        <div class="icon-name">User</div>
+        <div class="icon-usage">个人</div>
+        <span class="copy-hint">点击复制</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 预约相关 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:calendar-days"></iconify-icon>
+      <span class="category-title">预约相关</span>
+      <span class="category-count">9个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card success" onclick="copyIcon('CalendarPlus')">
+        <div class="icon-display"><iconify-icon icon="lucide:calendar-plus"></iconify-icon></div>
+        <div class="icon-name">CalendarPlus</div>
+        <div class="icon-usage">创建预约</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('CalendarX')">
+        <div class="icon-display"><iconify-icon icon="lucide:calendar-x"></iconify-icon></div>
+        <div class="icon-name">CalendarX</div>
+        <div class="icon-usage">取消预约</div>
+      </div>
+      <div class="icon-card success" onclick="copyIcon('CalendarCheck')">
+        <div class="icon-display"><iconify-icon icon="lucide:calendar-check"></iconify-icon></div>
+        <div class="icon-name">CalendarCheck</div>
+        <div class="icon-usage">预约成功</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('CalendarDays')">
+        <div class="icon-display"><iconify-icon icon="lucide:calendar-days"></iconify-icon></div>
+        <div class="icon-name">CalendarDays</div>
+        <div class="icon-usage">日期选择</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Clock')">
+        <div class="icon-display"><iconify-icon icon="lucide:clock"></iconify-icon></div>
+        <div class="icon-name">Clock</div>
+        <div class="icon-usage">时间段</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Clock3')">
+        <div class="icon-display"><iconify-icon icon="lucide:clock-3"></iconify-icon></div>
+        <div class="icon-name">Clock3</div>
+        <div class="icon-usage">暂离</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Timer')">
+        <div class="icon-display"><iconify-icon icon="lucide:timer"></iconify-icon></div>
+        <div class="icon-name">Timer</div>
+        <div class="icon-usage">计时器</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('AlarmClock')">
+        <div class="icon-display"><iconify-icon icon="lucide:alarm-clock"></iconify-icon></div>
+        <div class="icon-name">AlarmClock</div>
+        <div class="icon-usage">提醒</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('History')">
+        <div class="icon-display"><iconify-icon icon="lucide:history"></iconify-icon></div>
+        <div class="icon-name">History</div>
+        <div class="icon-usage">历史记录</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 座位相关 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:armchair"></iconify-icon>
+      <span class="category-title">座位相关</span>
+      <span class="category-count">10个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card primary" onclick="copyIcon('Armchair')">
+        <div class="icon-display"><iconify-icon icon="lucide:armchair"></iconify-icon></div>
+        <div class="icon-name">Armchair</div>
+        <div class="icon-usage">座位</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('PlugZap')">
+        <div class="icon-display"><iconify-icon icon="lucide:plug-zap"></iconify-icon></div>
+        <div class="icon-name">PlugZap</div>
+        <div class="icon-usage">电源座</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Sun')">
+        <div class="icon-display"><iconify-icon icon="lucide:sun"></iconify-icon></div>
+        <div class="icon-name">Sun</div>
+        <div class="icon-usage">靠窗座</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('VolumeX')">
+        <div class="icon-display"><iconify-icon icon="lucide:volume-x"></iconify-icon></div>
+        <div class="icon-name">VolumeX</div>
+        <div class="icon-usage">安静区</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('MessagesSquare')">
+        <div class="icon-display"><iconify-icon icon="lucide:messages-square"></iconify-icon></div>
+        <div class="icon-name">MessagesSquare</div>
+        <div class="icon-usage">讨论区</div>
+      </div>
+      <div class="icon-card success" onclick="copyIcon('ScanLine')">
+        <div class="icon-display"><iconify-icon icon="lucide:scan-line"></iconify-icon></div>
+        <div class="icon-name">ScanLine</div>
+        <div class="icon-usage">扫码签到</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('QrCode')">
+        <div class="icon-display"><iconify-icon icon="lucide:qr-code"></iconify-icon></div>
+        <div class="icon-name">QrCode</div>
+        <div class="icon-usage">二维码</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('LogIn')">
+        <div class="icon-display"><iconify-icon icon="lucide:log-in"></iconify-icon></div>
+        <div class="icon-name">LogIn</div>
+        <div class="icon-usage">签到</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('LogOut')">
+        <div class="icon-display"><iconify-icon icon="lucide:log-out"></iconify-icon></div>
+        <div class="icon-name">LogOut</div>
+        <div class="icon-usage">签退</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('MapPin')">
+        <div class="icon-display"><iconify-icon icon="lucide:map-pin"></iconify-icon></div>
+        <div class="icon-name">MapPin</div>
+        <div class="icon-usage">位置</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 状态图标 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:circle-check"></iconify-icon>
+      <span class="category-title">状态图标</span>
+      <span class="category-count">8个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card success" onclick="copyIcon('CheckCircle')">
+        <div class="icon-display"><iconify-icon icon="lucide:check-circle"></iconify-icon></div>
+        <div class="icon-name">CheckCircle</div>
+        <div class="icon-usage">成功</div>
+      </div>
+      <div class="icon-card success" onclick="copyIcon('Check')">
+        <div class="icon-display"><iconify-icon icon="lucide:check"></iconify-icon></div>
+        <div class="icon-name">Check</div>
+        <div class="icon-usage">勾选</div>
+      </div>
+      <div class="icon-card warning" onclick="copyIcon('AlertTriangle')">
+        <div class="icon-display"><iconify-icon icon="lucide:alert-triangle"></iconify-icon></div>
+        <div class="icon-name">AlertTriangle</div>
+        <div class="icon-usage">警告</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('XCircle')">
+        <div class="icon-display"><iconify-icon icon="lucide:x-circle"></iconify-icon></div>
+        <div class="icon-name">XCircle</div>
+        <div class="icon-usage">错误</div>
+      </div>
+      <div class="icon-card info" onclick="copyIcon('Info')">
+        <div class="icon-display"><iconify-icon icon="lucide:info"></iconify-icon></div>
+        <div class="icon-name">Info</div>
+        <div class="icon-usage">信息</div>
+      </div>
+      <div class="icon-card spin" onclick="copyIcon('Loader2')">
+        <div class="icon-display"><iconify-icon icon="lucide:loader-2"></iconify-icon></div>
+        <div class="icon-name">Loader2</div>
+        <div class="icon-usage">加载中</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('CircleDot')">
+        <div class="icon-display"><iconify-icon icon="lucide:circle-dot"></iconify-icon></div>
+        <div class="icon-name">CircleDot</div>
+        <div class="icon-usage">待处理</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('HelpCircle')">
+        <div class="icon-display"><iconify-icon icon="lucide:help-circle"></iconify-icon></div>
+        <div class="icon-name">HelpCircle</div>
+        <div class="icon-usage">帮助</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成就相关 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:trophy"></iconify-icon>
+      <span class="category-title">成就相关</span>
+      <span class="category-count">10个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card accent" onclick="copyIcon('Trophy')">
+        <div class="icon-display"><iconify-icon icon="lucide:trophy"></iconify-icon></div>
+        <div class="icon-name">Trophy</div>
+        <div class="icon-usage">奖杯</div>
+      </div>
+      <div class="icon-card accent" onclick="copyIcon('Medal')">
+        <div class="icon-display"><iconify-icon icon="lucide:medal"></iconify-icon></div>
+        <div class="icon-name">Medal</div>
+        <div class="icon-usage">奖牌</div>
+      </div>
+      <div class="icon-card accent" onclick="copyIcon('Crown')">
+        <div class="icon-display"><iconify-icon icon="lucide:crown"></iconify-icon></div>
+        <div class="icon-name">Crown</div>
+        <div class="icon-usage">皇冠</div>
+      </div>
+      <div class="icon-card accent" onclick="copyIcon('Star')">
+        <div class="icon-display"><iconify-icon icon="lucide:star"></iconify-icon></div>
+        <div class="icon-name">Star</div>
+        <div class="icon-usage">星星</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('Flame')">
+        <div class="icon-display"><iconify-icon icon="lucide:flame"></iconify-icon></div>
+        <div class="icon-name">Flame</div>
+        <div class="icon-usage">连续打卡</div>
+      </div>
+      <div class="icon-card accent" onclick="copyIcon('Zap')">
+        <div class="icon-display"><iconify-icon icon="lucide:zap"></iconify-icon></div>
+        <div class="icon-name">Zap</div>
+        <div class="icon-usage">闪电</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('Heart')">
+        <div class="icon-display"><iconify-icon icon="lucide:heart"></iconify-icon></div>
+        <div class="icon-name">Heart</div>
+        <div class="icon-usage">喜欢</div>
+      </div>
+      <div class="icon-card info" onclick="copyIcon('Gem')">
+        <div class="icon-display"><iconify-icon icon="lucide:gem"></iconify-icon></div>
+        <div class="icon-name">Gem</div>
+        <div class="icon-usage">钻石</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Award')">
+        <div class="icon-display"><iconify-icon icon="lucide:award"></iconify-icon></div>
+        <div class="icon-name">Award</div>
+        <div class="icon-usage">徽章</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Sparkles')">
+        <div class="icon-display"><iconify-icon icon="lucide:sparkles"></iconify-icon></div>
+        <div class="icon-name">Sparkles</div>
+        <div class="icon-usage">闪耀</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 操作图标 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:mouse-pointer-click"></iconify-icon>
+      <span class="category-title">操作图标</span>
+      <span class="category-count">16个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card" onclick="copyIcon('Plus')">
+        <div class="icon-display"><iconify-icon icon="lucide:plus"></iconify-icon></div>
+        <div class="icon-name">Plus</div>
+        <div class="icon-usage">添加</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Minus')">
+        <div class="icon-display"><iconify-icon icon="lucide:minus"></iconify-icon></div>
+        <div class="icon-name">Minus</div>
+        <div class="icon-usage">减少</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('Trash2')">
+        <div class="icon-display"><iconify-icon icon="lucide:trash-2"></iconify-icon></div>
+        <div class="icon-name">Trash2</div>
+        <div class="icon-usage">删除</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Pencil')">
+        <div class="icon-display"><iconify-icon icon="lucide:pencil"></iconify-icon></div>
+        <div class="icon-name">Pencil</div>
+        <div class="icon-usage">编辑</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Search')">
+        <div class="icon-display"><iconify-icon icon="lucide:search"></iconify-icon></div>
+        <div class="icon-name">Search</div>
+        <div class="icon-usage">搜索</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Filter')">
+        <div class="icon-display"><iconify-icon icon="lucide:filter"></iconify-icon></div>
+        <div class="icon-name">Filter</div>
+        <div class="icon-usage">筛选</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('ArrowUpDown')">
+        <div class="icon-display"><iconify-icon icon="lucide:arrow-up-down"></iconify-icon></div>
+        <div class="icon-name">ArrowUpDown</div>
+        <div class="icon-usage">排序</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('RefreshCw')">
+        <div class="icon-display"><iconify-icon icon="lucide:refresh-cw"></iconify-icon></div>
+        <div class="icon-name">RefreshCw</div>
+        <div class="icon-usage">刷新</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Download')">
+        <div class="icon-display"><iconify-icon icon="lucide:download"></iconify-icon></div>
+        <div class="icon-name">Download</div>
+        <div class="icon-usage">下载</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Upload')">
+        <div class="icon-display"><iconify-icon icon="lucide:upload"></iconify-icon></div>
+        <div class="icon-name">Upload</div>
+        <div class="icon-usage">上传</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Share2')">
+        <div class="icon-display"><iconify-icon icon="lucide:share-2"></iconify-icon></div>
+        <div class="icon-name">Share2</div>
+        <div class="icon-usage">分享</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Copy')">
+        <div class="icon-display"><iconify-icon icon="lucide:copy"></iconify-icon></div>
+        <div class="icon-name">Copy</div>
+        <div class="icon-usage">复制</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('MoreHorizontal')">
+        <div class="icon-display"><iconify-icon icon="lucide:more-horizontal"></iconify-icon></div>
+        <div class="icon-name">MoreHorizontal</div>
+        <div class="icon-usage">更多</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('ArrowLeft')">
+        <div class="icon-display"><iconify-icon icon="lucide:arrow-left"></iconify-icon></div>
+        <div class="icon-name">ArrowLeft</div>
+        <div class="icon-usage">返回</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('X')">
+        <div class="icon-display"><iconify-icon icon="lucide:x"></iconify-icon></div>
+        <div class="icon-name">X</div>
+        <div class="icon-usage">关闭</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Eye')">
+        <div class="icon-display"><iconify-icon icon="lucide:eye"></iconify-icon></div>
+        <div class="icon-name">Eye</div>
+        <div class="icon-usage">查看</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据图标 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:bar-chart-3"></iconify-icon>
+      <span class="category-title">数据图标</span>
+      <span class="category-count">8个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card" onclick="copyIcon('BarChart3')">
+        <div class="icon-display"><iconify-icon icon="lucide:bar-chart-3"></iconify-icon></div>
+        <div class="icon-name">BarChart3</div>
+        <div class="icon-usage">柱状图</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('LineChart')">
+        <div class="icon-display"><iconify-icon icon="lucide:line-chart"></iconify-icon></div>
+        <div class="icon-name">LineChart</div>
+        <div class="icon-usage">折线图</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('PieChart')">
+        <div class="icon-display"><iconify-icon icon="lucide:pie-chart"></iconify-icon></div>
+        <div class="icon-name">PieChart</div>
+        <div class="icon-usage">饼图</div>
+      </div>
+      <div class="icon-card success" onclick="copyIcon('TrendingUp')">
+        <div class="icon-display"><iconify-icon icon="lucide:trending-up"></iconify-icon></div>
+        <div class="icon-name">TrendingUp</div>
+        <div class="icon-usage">上升</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('TrendingDown')">
+        <div class="icon-display"><iconify-icon icon="lucide:trending-down"></iconify-icon></div>
+        <div class="icon-name">TrendingDown</div>
+        <div class="icon-usage">下降</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Activity')">
+        <div class="icon-display"><iconify-icon icon="lucide:activity"></iconify-icon></div>
+        <div class="icon-name">Activity</div>
+        <div class="icon-usage">活动</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Database')">
+        <div class="icon-display"><iconify-icon icon="lucide:database"></iconify-icon></div>
+        <div class="icon-name">Database</div>
+        <div class="icon-usage">数据</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('LayoutDashboard')">
+        <div class="icon-display"><iconify-icon icon="lucide:layout-dashboard"></iconify-icon></div>
+        <div class="icon-name">LayoutDashboard</div>
+        <div class="icon-usage">仪表盘</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自习室图标 -->
+  <div class="category">
+    <div class="category-header">
+      <iconify-icon icon="lucide:building-2"></iconify-icon>
+      <span class="category-title">自习室图标</span>
+      <span class="category-count">6个</span>
+    </div>
+    <div class="icon-grid">
+      <div class="icon-card" onclick="copyIcon('Library')">
+        <div class="icon-display"><iconify-icon icon="lucide:library"></iconify-icon></div>
+        <div class="icon-name">Library</div>
+        <div class="icon-usage">图书馆</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('GraduationCap')">
+        <div class="icon-display"><iconify-icon icon="lucide:graduation-cap"></iconify-icon></div>
+        <div class="icon-name">GraduationCap</div>
+        <div class="icon-usage">教学楼</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Building')">
+        <div class="icon-display"><iconify-icon icon="lucide:building"></iconify-icon></div>
+        <div class="icon-name">Building</div>
+        <div class="icon-usage">综合楼</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('Building2')">
+        <div class="icon-display"><iconify-icon icon="lucide:building-2"></iconify-icon></div>
+        <div class="icon-name">Building2</div>
+        <div class="icon-usage">大楼</div>
+      </div>
+      <div class="icon-card" onclick="copyIcon('DoorOpen')">
+        <div class="icon-display"><iconify-icon icon="lucide:door-open"></iconify-icon></div>
+        <div class="icon-name">DoorOpen</div>
+        <div class="icon-usage">开放</div>
+      </div>
+      <div class="icon-card error" onclick="copyIcon('DoorClosed')">
+        <div class="icon-display"><iconify-icon icon="lucide:door-closed"></iconify-icon></div>
+        <div class="icon-name">DoorClosed</div>
+        <div class="icon-usage">关闭</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 代码示例 -->
+  <div class="examples-section">
+    <h2 class="example-title">
+      <iconify-icon icon="lucide:code"></iconify-icon>
+      Vue 3 使用代码
+    </h2>
+    <div class="code-block">
+      <span class="code-comment">// 1. 安装</span><br>
+      npm install lucide-vue-next<br><br>
+      
+      <span class="code-comment">// 2. 使用 (按需导入)</span><br>
+      <span class="code-tag">&lt;template&gt;</span><br>
+      &nbsp;&nbsp;<span class="code-tag">&lt;Home</span> <span class="code-attr">:size</span>=<span class="code-string">"20"</span> <span class="code-tag">/&gt;</span><br>
+      &nbsp;&nbsp;<span class="code-tag">&lt;Calendar</span> <span class="code-attr">color</span>=<span class="code-string">"#3FB19E"</span> <span class="code-tag">/&gt;</span><br>
+      &nbsp;&nbsp;<span class="code-tag">&lt;Loader2</span> <span class="code-attr">class</span>=<span class="code-string">"animate-spin"</span> <span class="code-tag">/&gt;</span><br>
+      <span class="code-tag">&lt;/template&gt;</span><br><br>
+      
+      <span class="code-tag">&lt;script setup&gt;</span><br>
+      <span class="code-keyword">import</span> { Home, Calendar, Loader2 } <span class="code-keyword">from</span> <span class="code-string">'lucide-vue-next'</span><br>
+      <span class="code-tag">&lt;/script&gt;</span>
+    </div>
+  </div>
+
+  <div class="footer-tip">
+    📚 完整图标列表请访问 <a href="https://lucide.dev/icons/" target="_blank">lucide.dev/icons</a><br>
+    点击图标可复制导入代码
+  </div>
+
+  <!-- Toast 提示 -->
+  <div class="toast" id="toast">
+    <iconify-icon icon="lucide:check"></iconify-icon>
+    <span id="toast-text">已复制到剪贴板</span>
+  </div>
+
+  <script>
+    function copyIcon(name) {
+      const code = `import { ${name} } from 'lucide-vue-next'`;
+      navigator.clipboard.writeText(code).then(() => {
+        showToast(`已复制: ${name}`);
+      });
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.textContent = text;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

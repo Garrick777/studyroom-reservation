@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="defBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FAFAFA"/>
+      <stop offset="100%" style="stop-color:#F5F5F5"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景 -->
+  <rect width="400" height="300" fill="url(#defBg)"/>
+  <!-- 简洁桌子 -->
+  <rect x="80" y="140" width="240" height="60" fill="#BDBDBD" rx="8"/>
+  <rect x="100" y="200" width="15" height="50" fill="#9E9E9E"/>
+  <rect x="285" y="200" width="15" height="50" fill="#9E9E9E"/>
+  <!-- 椅子轮廓 -->
+  <ellipse cx="150" cy="180" rx="25" ry="10" fill="#E0E0E0" stroke="#BDBDBD" stroke-width="2"/>
+  <ellipse cx="250" cy="180" rx="25" ry="10" fill="#E0E0E0" stroke="#BDBDBD" stroke-width="2"/>
+  <!-- 书本图标 -->
+  <rect x="170" y="110" width="60" height="40" fill="#3FB19E" rx="5"/>
+  <rect x="175" y="115" width="50" height="5" fill="#fff"/>
+  <rect x="175" y="125" width="40" height="3" fill="#fff"/>
+  <rect x="175" y="133" width="45" height="3" fill="#fff"/>
+  <rect x="175" y="141" width="30" height="3" fill="#fff"/>
+  <!-- 文字标签 -->
+  <rect x="140" y="260" width="120" height="30" fill="#9E9E9E" rx="15"/>
+  <text x="200" y="280" font-family="Arial" font-size="14" fill="white" text-anchor="middle">自习室</text>
+</svg>
