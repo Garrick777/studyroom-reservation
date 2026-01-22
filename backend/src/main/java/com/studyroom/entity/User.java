@@ -193,7 +193,7 @@ public class User implements Serializable {
      * 检查是否在黑名单中
      */
     public boolean isInBlacklist() {
-        if (status != 2) {
+        if (status == null || status != 2) {
             return false;
         }
         if (blacklistEndTime == null) {

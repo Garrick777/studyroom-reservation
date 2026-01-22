@@ -59,7 +59,7 @@ public class GroupMember {
      * 用户信息
      */
     @TableField(exist = false)
-    private User user;
+    private User user = new User();
 
     /**
      * 小组信息

@@ -15,11 +15,11 @@ public interface GroupMemberMapper extends BaseMapper<GroupMember> {
     /**
      * 获取小组成员列表（带用户信息）
      */
-    @Select("SELECT gm.*, u.id as member_user_id, u.username, u.nickname, u.avatar, u.student_id " +
+    @Select("SELECT gm.*, u.id as member_user_id, u.username, u.real_name as user_real_name, u.avatar, u.student_id " +
             "FROM group_member gm " +
             "LEFT JOIN user u ON gm.user_id = u.id " +
             "WHERE gm.group_id = #{groupId} AND gm.status = 1 " +
-            "ORDER BY FIELD(gm.role, 'CREATOR', 'ADMIN', 'MEMBER'), gm.join_time")
+            "ORDER BY CASE gm.role WHEN 'CREATOR' THEN 1 WHEN 'ADMIN' THEN 2 ELSE 3 END, gm.join_time")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "groupId", column = "group_id"),
@@ -31,16 +31,16 @@ public interface GroupMemberMapper extends BaseMapper<GroupMember> {
             @Result(property = "status", column = "status"),
             @Result(property = "user.id", column = "member_user_id"),
             @Result(property = "user.username", column = "username"),
-            @Result(property = "user.nickname", column = "nickname"),
+            @Result(property = "user.realName", column = "user_real_name"),
             @Result(property = "user.avatar", column = "avatar"),
-            @Result(property = "user.studentNo", column = "student_id")
+            @Result(property = "user.studentId", column = "student_id")
     })
     List<GroupMember> selectMembersWithDetail(@Param("groupId") Long groupId);
 
     /**
      * 获取待审批成员列表
      */
-    @Select("SELECT gm.*, u.id as member_user_id, u.username, u.nickname, u.avatar " +
+    @Select("SELECT gm.*, u.id as member_user_id, u.username, u.real_name as user_real_name, u.avatar " +
             "FROM group_member gm " +
             "LEFT JOIN user u ON gm.user_id = u.id " +
             "WHERE gm.group_id = #{groupId} AND gm.status = 0 " +
@@ -53,7 +53,7 @@ public interface GroupMemberMapper extends BaseMapper<GroupMember> {
             @Result(property = "createdAt", column = "created_at"),
             @Result(property = "user.id", column = "member_user_id"),
             @Result(property = "user.username", column = "username"),
-            @Result(property = "user.nickname", column = "nickname"),
+            @Result(property = "user.realName", column = "user_real_name"),
             @Result(property = "user.avatar", column = "avatar")
     })
     List<GroupMember> selectPendingMembers(@Param("groupId") Long groupId);
