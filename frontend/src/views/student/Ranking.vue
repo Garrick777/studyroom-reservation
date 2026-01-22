@@ -197,7 +197,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .ranking-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding-bottom: 40px;
 }
 
@@ -227,15 +227,18 @@ onMounted(() => {
     z-index: 1;
 
     h1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       font-size: 32px;
       font-weight: 700;
-      color: #ffd700;
+      color: #f59e0b;
       margin-bottom: 8px;
-      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
     }
 
     p {
-      color: rgba(255, 255, 255, 0.7);
+      color: #64748b;
       font-size: 14px;
     }
   }
@@ -246,7 +249,7 @@ onMounted(() => {
   margin-bottom: 24px;
 
   h3 {
-    color: rgba(255, 255, 255, 0.9);
+    color: #1e293b;
     font-size: 16px;
     margin-bottom: 12px;
     padding-left: 4px;
@@ -258,17 +261,18 @@ onMounted(() => {
     gap: 12px;
 
     .rank-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
+      background: white;
       border-radius: 16px;
       padding: 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 
       .rank-icon {
         font-size: 28px;
+        color: #f59e0b;
       }
 
       .rank-info {
@@ -277,24 +281,24 @@ onMounted(() => {
 
         .rank-type {
           font-size: 12px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #64748b;
         }
 
         .rank-value {
           font-size: 18px;
           font-weight: 700;
-          color: #ffd700;
+          color: #f59e0b;
         }
 
         .rank-detail {
           font-size: 11px;
-          color: rgba(255, 255, 255, 0.5);
+          color: #94a3b8;
         }
       }
 
-      &.study-time { border-color: rgba(99, 102, 241, 0.5); }
-      &.checkin { border-color: rgba(239, 68, 68, 0.5); }
-      &.points { border-color: rgba(59, 130, 246, 0.5); }
+      &.study-time { border-left: 3px solid #6366f1; }
+      &.checkin { border-left: 3px solid #ef4444; }
+      &.points { border-left: 3px solid #3b82f6; }
     }
   }
 }
@@ -311,19 +315,22 @@ onMounted(() => {
     align-items: center;
     gap: 6px;
     padding: 10px 18px;
-    background: rgba(255, 255, 255, 0.08);
+    background: white;
+    border: 1px solid #e2e8f0;
     border-radius: 24px;
     cursor: pointer;
     transition: all 0.3s;
-    color: rgba(255, 255, 255, 0.7);
+    color: #64748b;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.15);
+      background: #f8fafc;
+      border-color: #f59e0b;
     }
 
     &.active {
-      background: linear-gradient(135deg, #ffd700, #ff8c00);
-      color: #1a1a2e;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: white;
+      border-color: transparent;
       font-weight: 600;
     }
 
@@ -343,20 +350,21 @@ onMounted(() => {
   margin-bottom: 20px;
 
   :deep(.el-radio-group) {
-    background: rgba(255, 255, 255, 0.08);
+    background: white;
     border-radius: 12px;
     padding: 4px;
+    border: 1px solid #e2e8f0;
 
     .el-radio-button__inner {
       background: transparent;
       border: none;
-      color: rgba(255, 255, 255, 0.7);
+      color: #64748b;
       padding: 8px 16px;
     }
 
     .el-radio-button__original-radio:checked + .el-radio-button__inner {
-      background: rgba(255, 215, 0, 0.2);
-      color: #ffd700;
+      background: #fef3c7;
+      color: #d97706;
       box-shadow: none;
     }
   }
@@ -416,14 +424,14 @@ onMounted(() => {
     }
 
     .user-name {
-      color: white;
+      color: #1e293b;
       font-weight: 600;
       font-size: 14px;
       margin-bottom: 4px;
     }
 
     .user-value {
-      color: rgba(255, 255, 255, 0.7);
+      color: #64748b;
       font-size: 12px;
     }
 
@@ -469,15 +477,16 @@ onMounted(() => {
 }
 
 .rest-list {
-  background: rgba(255, 255, 255, 0.05);
+  background: white;
   border-radius: 20px;
   overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 
   .rank-item {
     display: flex;
     align-items: center;
     padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid #f1f5f9;
 
     &:last-child {
       border-bottom: none;
@@ -487,7 +496,7 @@ onMounted(() => {
       width: 32px;
       font-size: 16px;
       font-weight: 600;
-      color: rgba(255, 255, 255, 0.5);
+      color: #94a3b8;
     }
 
     .avatar {
@@ -502,13 +511,13 @@ onMounted(() => {
       flex: 1;
 
       .name {
-        color: white;
+        color: #1e293b;
         font-weight: 500;
       }
     }
 
     .value {
-      color: #ffd700;
+      color: #f59e0b;
       font-weight: 600;
       font-size: 15px;
     }

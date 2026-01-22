@@ -467,7 +467,7 @@ onMounted(() => {
 .achievements-page {
   padding: 24px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 .page-header {
@@ -475,14 +475,18 @@ onMounted(() => {
   margin-bottom: 32px;
   
   h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     font-size: 32px;
     font-weight: 700;
-    color: #fff;
+    color: #1e293b;
     margin-bottom: 8px;
   }
   
   p {
-    color: rgba(255, 255, 255, 0.6);
+    color: #64748b;
     font-size: 14px;
   }
 }
@@ -495,14 +499,14 @@ onMounted(() => {
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.08);
+  background: white;
   border-radius: 16px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   position: relative;
   overflow: hidden;
   
@@ -513,12 +517,12 @@ onMounted(() => {
   
   &.unclaimed {
     cursor: pointer;
-    background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 152, 0, 0.2) 100%);
-    border-color: rgba(255, 193, 7, 0.3);
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #fbbf24;
     
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(255, 193, 7, 0.2);
+      box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
     }
   }
 }
@@ -540,11 +544,11 @@ onMounted(() => {
   .stat-value {
     font-size: 28px;
     font-weight: 700;
-    color: #fff;
+    color: #1e293b;
   }
   
   .stat-label {
-    color: rgba(255, 255, 255, 0.6);
+    color: #64748b;
     font-size: 13px;
   }
 }
@@ -555,11 +559,11 @@ onMounted(() => {
   left: 0;
   right: 0;
   height: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #e2e8f0;
   
   .progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
     transition: width 0.5s ease;
   }
 }
@@ -575,9 +579,10 @@ onMounted(() => {
   display: flex;
   gap: 20px;
   align-items: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: white;
   padding: 16px 24px;
   border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 .rarity-item {
@@ -585,7 +590,7 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  color: #475569;
   
   .rarity-dot {
     width: 10px;
@@ -611,21 +616,23 @@ onMounted(() => {
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  border: none;
+  border: 1px solid #e2e8f0;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.7);
+  background: white;
+  color: #64748b;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: #f8fafc;
+    border-color: #8b5cf6;
   }
   
   &.active {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    color: white;
+    border-color: transparent;
   }
   
   .tab-icon {
@@ -638,14 +645,15 @@ onMounted(() => {
   
   :deep(.el-radio-group) {
     .el-radio-button__inner {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.7);
+      background: white;
+      border-color: #e2e8f0;
+      color: #64748b;
     }
     
     .el-radio-button__original-radio:checked + .el-radio-button__inner {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-color: #667eea;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+      border-color: #8b5cf6;
+      color: white;
     }
   }
 }
@@ -657,26 +665,28 @@ onMounted(() => {
 }
 
 .achievement-card {
-  background: rgba(255, 255, 255, 0.06);
+  background: white;
   border-radius: 16px;
   padding: 20px;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   
   &:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
   }
   
   &.unlocked {
-    border-color: rgba(76, 175, 80, 0.3);
+    border-color: #86efac;
+    background: linear-gradient(135deg, #f0fdf4, white);
   }
   
   &.claimable {
-    border-color: rgba(255, 193, 7, 0.5);
+    border-color: #fbbf24;
     animation: glow 2s ease-in-out infinite;
   }
   
@@ -753,10 +763,10 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: white;
   font-size: 14px;
   font-weight: bold;
-  border: 2px solid #1a1a2e;
+  border: 2px solid white;
 }
 
 .claimable-dot {
@@ -782,22 +792,22 @@ onMounted(() => {
 .achievement-name {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: #1e293b;
   margin-bottom: 4px;
 }
 
 .achievement-desc {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #64748b;
   line-height: 1.4;
 }
 
 .achievement-progress {
   margin-bottom: 12px;
-  
+
   .progress-bar {
     height: 6px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #e2e8f0;
     border-radius: 3px;
     overflow: hidden;
     margin-bottom: 4px;
@@ -811,7 +821,7 @@ onMounted(() => {
   
   .progress-text {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: #94a3b8;
   }
 }
 
@@ -821,7 +831,7 @@ onMounted(() => {
   
   .reward-item {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
+    color: #475569;
   }
 }
 
@@ -832,8 +842,8 @@ onMounted(() => {
   font-size: 11px;
   padding: 4px 8px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.6);
+  background: #f1f5f9;
+  color: #64748b;
   
   .legendary & {
     background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 140, 0, 0.3));
@@ -862,14 +872,14 @@ onMounted(() => {
   }
   
   .empty-text {
-    color: rgba(255, 255, 255, 0.5);
+    color: #94a3b8;
   }
 }
 
 // 详情弹窗样式
 :deep(.achievement-detail-dialog) {
   .el-dialog {
-    background: #1e1e2d;
+    background: white;
     border-radius: 20px;
     overflow: hidden;
   }
@@ -884,7 +894,7 @@ onMounted(() => {
 }
 
 .detail-content {
-  color: #fff;
+  color: #1e293b;
 }
 
 .detail-header {
@@ -894,10 +904,10 @@ onMounted(() => {
   padding: 24px;
   position: relative;
   
-  &.legendary { background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 140, 0, 0.1)); }
-  &.epic { background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(103, 58, 183, 0.1)); }
-  &.rare { background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(21, 101, 192, 0.1)); }
-  &.common { background: rgba(255, 255, 255, 0.05); }
+  &.legendary { background: linear-gradient(135deg, #fef9c3, #fef3c7); }
+  &.epic { background: linear-gradient(135deg, #fae8ff, #f3e8ff); }
+  &.rare { background: linear-gradient(135deg, #dbeafe, #e0f2fe); }
+  &.common { background: #f8fafc; }
 }
 
 .detail-badge {
@@ -928,7 +938,7 @@ onMounted(() => {
   
   .detail-rarity {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: #64748b;
   }
 }
 
@@ -940,8 +950,8 @@ onMounted(() => {
   height: 32px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
+  background: #f1f5f9;
+  color: #64748b;
   font-size: 20px;
   cursor: pointer;
   display: flex;
@@ -949,7 +959,7 @@ onMounted(() => {
   justify-content: center;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: #e2e8f0;
   }
 }
 
@@ -959,7 +969,7 @@ onMounted(() => {
 
 .detail-desc {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #475569;
   line-height: 1.6;
   margin-bottom: 24px;
 }
@@ -974,7 +984,7 @@ onMounted(() => {
 .progress-label,
 .reward-label {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #94a3b8;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -982,12 +992,12 @@ onMounted(() => {
 
 .condition-value {
   font-size: 15px;
-  color: #fff;
+  color: #1e293b;
 }
 
 .progress-bar-large {
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #e2e8f0;
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 8px;
@@ -1001,7 +1011,7 @@ onMounted(() => {
 
 .progress-numbers {
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
 }
 
 .reward-items {
@@ -1011,7 +1021,8 @@ onMounted(() => {
 
 .reward-box {
   flex: 1;
-  background: rgba(255, 255, 255, 0.05);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 16px;
   text-align: center;
@@ -1025,13 +1036,13 @@ onMounted(() => {
   .reward-value {
     font-size: 24px;
     font-weight: 700;
-    color: #fff;
+    color: #1e293b;
     display: block;
   }
   
   .reward-name {
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
+    color: #94a3b8;
   }
 }
 
@@ -1070,7 +1081,8 @@ onMounted(() => {
   align-items: center;
   gap: 16px;
   padding: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   margin-bottom: 12px;
   
@@ -1106,14 +1118,14 @@ onMounted(() => {
   
   .unclaimed-reward {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    color: #64748b;
   }
 }
 
 .empty-unclaimed {
   text-align: center;
   padding: 40px;
-  color: rgba(255, 255, 255, 0.5);
+  color: #94a3b8;
 }
 
 // 奖励弹出动画
@@ -1151,7 +1163,7 @@ onMounted(() => {
 .popup-title {
   font-size: 24px;
   font-weight: 700;
-  color: #fff;
+  color: #1e293b;
   margin-bottom: 16px;
 }
 
@@ -1162,7 +1174,7 @@ onMounted(() => {
   
   span {
     font-size: 18px;
-    color: rgba(255, 255, 255, 0.9);
+    color: #1e293b;
   }
 }
 
