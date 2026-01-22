@@ -86,8 +86,9 @@ const loadSeats = async () => {
     // 获取基础座位信息
     const baseSeats = await getSeatList(selectedRoomId.value)
     
-    // 获取今日实时状态
-    const today = new Date().toISOString().split('T')[0]
+    // 获取今日实时状态（使用本地日期）
+    const now = new Date()
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
     try {
       const seatsWithStatus = await getSeatsWithStatus(selectedRoomId.value, today, 0)
       // 合并状态

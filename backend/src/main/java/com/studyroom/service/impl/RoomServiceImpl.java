@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class RoomServiceImpl implements RoomService {
     private final SeatMapper seatMapper;
     private final TimeSlotMapper timeSlotMapper;
     private final UserFavoriteMapper userFavoriteMapper;
+    private final ReservationMapper reservationMapper;
 
     // ========== 自习室查询 ==========
 
@@ -128,13 +131,57 @@ public class RoomServiceImpl implements RoomService {
 
         List<Seat> seats = seatMapper.findByRoomId(roomId);
 
-        // TODO: 根据预约记录填充座位实时状态
-        // 这里暂时设置所有可用座位为 AVAILABLE
+        // 查询当天的预约记录
+        LocalDateTime dayStart = date.atStartOfDay();
+        LocalDateTime dayEnd = date.plusDays(1).atStartOfDay();
+        
+        LambdaQueryWrapper<Reservation> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(Reservation::getRoomId, roomId)
+               .eq(Reservation::getDate, date)
+               .in(Reservation::getStatus, "PENDING", "CHECKED_IN", "LEAVING");
+        
+        // 如果指定了时段，按时段筛选
+        if (timeSlotId != null && timeSlotId > 0) {
+            wrapper.eq(Reservation::getTimeSlotId, timeSlotId);
+        } else {
+            // 如果没指定时段，查询当前时间有效的预约
+            LocalDateTime now = LocalDateTime.now();
+            wrapper.le(Reservation::getStartTime, now)
+                   .ge(Reservation::getEndTime, now);
+        }
+        
+        List<Reservation> reservations = reservationMapper.selectList(wrapper);
+        
+        // 构建座位ID到预约状态的映射
+        Map<Long, String> seatStatusMap = reservations.stream()
+                .collect(Collectors.toMap(
+                        Reservation::getSeatId,
+                        Reservation::getStatus,
+                        (a, b) -> a // 如果有重复，取第一个
+                ));
+        
+        // 根据预约记录填充座位实时状态
         seats.forEach(seat -> {
-            if (seat.getStatus() == 1) {
-                seat.setCurrentStatus(Seat.UseStatus.AVAILABLE.name());
-            } else {
+            if (seat.getStatus() != 1) {
+                // 座位本身不可用（禁用或维修）
                 seat.setCurrentStatus("UNAVAILABLE");
+            } else {
+                String reservationStatus = seatStatusMap.get(seat.getId());
+                if (reservationStatus == null) {
+                    // 没有预约，座位空闲
+                    seat.setCurrentStatus(Seat.UseStatus.AVAILABLE.name());
+                } else if ("CHECKED_IN".equals(reservationStatus)) {
+                    // 已签到，使用中
+                    seat.setCurrentStatus("IN_USE");
+                } else if ("LEAVING".equals(reservationStatus)) {
+                    // 暂离中
+                    seat.setCurrentStatus("LEAVING");
+                } else if ("PENDING".equals(reservationStatus)) {
+                    // 已预约未签到
+                    seat.setCurrentStatus("RESERVED");
+                } else {
+                    seat.setCurrentStatus(Seat.UseStatus.AVAILABLE.name());
+                }
             }
         });
 
