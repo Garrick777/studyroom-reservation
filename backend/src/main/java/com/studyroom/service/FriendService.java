@@ -344,32 +344,40 @@ public class FriendService {
      * 获取好友状态
      */
     private String getFriendStatus(Long userId, Long targetId) {
-        LambdaQueryWrapper<Friendship> wrapper = new LambdaQueryWrapper<>();
-        wrapper.and(w -> w
-                .and(inner -> inner.eq(Friendship::getUserId, userId).eq(Friendship::getFriendId, targetId))
-                .or()
-                .and(inner -> inner.eq(Friendship::getUserId, targetId).eq(Friendship::getFriendId, userId)));
+        // 查询我发出的请求
+        LambdaQueryWrapper<Friendship> sentWrapper = new LambdaQueryWrapper<>();
+        sentWrapper.eq(Friendship::getUserId, userId)
+                   .eq(Friendship::getFriendId, targetId);
+        Friendship sentFriendship = friendshipMapper.selectOne(sentWrapper);
         
-        Friendship friendship = friendshipMapper.selectOne(wrapper);
+        // 查询我收到的请求
+        LambdaQueryWrapper<Friendship> receivedWrapper = new LambdaQueryWrapper<>();
+        receivedWrapper.eq(Friendship::getUserId, targetId)
+                       .eq(Friendship::getFriendId, userId);
+        Friendship receivedFriendship = friendshipMapper.selectOne(receivedWrapper);
         
-        if (friendship == null) {
-            return "none"; // 无关系
+        // 优先检查已接受的关系
+        if (sentFriendship != null && sentFriendship.getStatus() == Friendship.STATUS_ACCEPTED) {
+            return "friend";
+        }
+        if (receivedFriendship != null && receivedFriendship.getStatus() == Friendship.STATUS_ACCEPTED) {
+            return "friend";
         }
         
-        switch (friendship.getStatus()) {
-            case Friendship.STATUS_ACCEPTED:
-                return "friend"; // 已是好友
-            case Friendship.STATUS_PENDING:
-                if (friendship.getUserId().equals(userId)) {
-                    return "sent"; // 我发送的请求待处理
-                } else {
-                    return "received"; // 收到的请求待处理
-                }
-            case Friendship.STATUS_REJECTED:
-                return "rejected"; // 被拒绝
-            default:
-                return "none";
+        // 检查待处理的请求
+        if (sentFriendship != null && sentFriendship.getStatus() == Friendship.STATUS_PENDING) {
+            return "sent"; // 我发送的请求待处理
         }
+        if (receivedFriendship != null && receivedFriendship.getStatus() == Friendship.STATUS_PENDING) {
+            return "received"; // 收到的请求待处理
+        }
+        
+        // 检查被拒绝的情况
+        if (sentFriendship != null && sentFriendship.getStatus() == Friendship.STATUS_REJECTED) {
+            return "rejected";
+        }
+        
+        return "none"; // 无关系
     }
 
     /**
