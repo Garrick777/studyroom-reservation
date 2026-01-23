@@ -268,8 +268,8 @@ function getHomePathByRole(role: string): string {
   }
 }
 
-// 用于防止重复获取用户信息
-let isFetchingUserInfo = false
+// 用户信息加载 Promise，确保只加载一次
+let userInfoPromise: Promise<void> | null = null
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
@@ -295,23 +295,33 @@ router.beforeEach(async (to, from, next) => {
   }
   
   // 有Token但没有用户信息，需要获取
-  if (userStore.token && !userStore.userInfo && !isFetchingUserInfo) {
-    isFetchingUserInfo = true
+  if (userStore.token && !userStore.userInfo) {
+    // 如果还没有开始获取用户信息，创建Promise
+    if (!userInfoPromise) {
+      userInfoPromise = userStore.fetchUserInfo()
+        .catch((error) => {
+          console.error('获取用户信息失败:', error)
+          throw error
+        })
+        .finally(() => {
+          userInfoPromise = null
+        })
+    }
+    
+    // 等待用户信息加载完成
     try {
-      await userStore.fetchUserInfo()
+      await userInfoPromise
     } catch (error) {
-      isFetchingUserInfo = false
       // Token无效，跳转登录
       next({ path: '/login', query: { redirect: to.fullPath } })
       return
     }
-    isFetchingUserInfo = false
   }
   
-  // 等待用户信息加载完成
-  if (isFetchingUserInfo) {
-    // 如果正在获取用户信息，等待一下再继续
-    await new Promise(resolve => setTimeout(resolve, 100))
+  // 确保用户信息已加载
+  if (!userStore.userInfo) {
+    next({ path: '/login', query: { redirect: to.fullPath } })
+    return
   }
   
   // 访问根路径时，根据角色重定向到对应首页

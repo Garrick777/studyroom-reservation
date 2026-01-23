@@ -256,11 +256,8 @@ public class ShopService {
      * 删除商品
      */
     public void deleteProduct(Long productId) {
-        PointProduct product = productMapper.selectById(productId);
-        if (product != null) {
-            product.setDeleted(1);
-            productMapper.updateById(product);
-        }
+        // 使用 MyBatis-Plus 的 deleteById，会自动处理 @TableLogic 逻辑删除
+        productMapper.deleteById(productId);
     }
 
     /**
