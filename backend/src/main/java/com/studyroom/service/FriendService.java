@@ -101,12 +101,12 @@ public class FriendService {
         }
 
         // 检查是否已有待处理的请求
-        LambdaQueryWrapper<Friendship> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Friendship::getUserId, userId)
+        LambdaQueryWrapper<Friendship> pendingWrapper = new LambdaQueryWrapper<>();
+        pendingWrapper.eq(Friendship::getUserId, userId)
                 .eq(Friendship::getFriendId, friendId)
                 .eq(Friendship::getStatus, Friendship.STATUS_PENDING);
         
-        if (friendshipMapper.selectCount(wrapper) > 0) {
+        if (friendshipMapper.selectCount(pendingWrapper) > 0) {
             throw new BusinessException(ResultCode.BAD_REQUEST, "已发送过好友请求，请等待对方确认");
         }
 
@@ -123,10 +123,27 @@ public class FriendService {
             return;
         }
 
-        // 创建好友请求
-        Friendship friendship = Friendship.createRequest(userId, friendId);
-        friendship.setRemark(remark);
-        friendshipMapper.insert(friendship);
+        // 检查是否有已删除或已拒绝的历史记录（可以重新发送请求）
+        LambdaQueryWrapper<Friendship> existingWrapper = new LambdaQueryWrapper<>();
+        existingWrapper.eq(Friendship::getUserId, userId)
+                .eq(Friendship::getFriendId, friendId);
+        Friendship existing = friendshipMapper.selectOne(existingWrapper);
+        
+        Friendship friendship;
+        if (existing != null) {
+            // 如果存在历史记录（已删除或已拒绝），则更新为待确认状态
+            existing.setStatus(Friendship.STATUS_PENDING);
+            existing.setRemark(remark);
+            existing.setCreatedAt(LocalDateTime.now());
+            existing.setUpdatedAt(LocalDateTime.now());
+            friendshipMapper.updateById(existing);
+            friendship = existing;
+        } else {
+            // 创建新的好友请求
+            friendship = Friendship.createRequest(userId, friendId);
+            friendship.setRemark(remark);
+            friendshipMapper.insert(friendship);
+        }
 
         // 发送通知消息
         User currentUser = userMapper.selectById(userId);
@@ -210,22 +227,34 @@ public class FriendService {
      */
     @Transactional
     public void deleteFriend(Long userId, Long friendId) {
-        // 查找好友关系
-        LambdaQueryWrapper<Friendship> wrapper = new LambdaQueryWrapper<>();
-        wrapper.and(w -> w
-                .and(inner -> inner.eq(Friendship::getUserId, userId).eq(Friendship::getFriendId, friendId))
-                .or()
-                .and(inner -> inner.eq(Friendship::getUserId, friendId).eq(Friendship::getFriendId, userId)))
-                .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        // 查找好友关系（我发起的）
+        LambdaQueryWrapper<Friendship> sentWrapper = new LambdaQueryWrapper<>();
+        sentWrapper.eq(Friendship::getUserId, userId)
+                   .eq(Friendship::getFriendId, friendId)
+                   .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        Friendship sentFriendship = friendshipMapper.selectOne(sentWrapper);
         
-        Friendship friendship = friendshipMapper.selectOne(wrapper);
-        if (friendship == null) {
+        // 查找好友关系（对方发起的）
+        LambdaQueryWrapper<Friendship> receivedWrapper = new LambdaQueryWrapper<>();
+        receivedWrapper.eq(Friendship::getUserId, friendId)
+                       .eq(Friendship::getFriendId, userId)
+                       .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        Friendship receivedFriendship = friendshipMapper.selectOne(receivedWrapper);
+        
+        // 至少要有一条好友关系存在
+        if (sentFriendship == null && receivedFriendship == null) {
             throw new BusinessException(ResultCode.BAD_REQUEST, "好友关系不存在");
         }
 
-        // 标记为删除
-        friendship.remove();
-        friendshipMapper.updateById(friendship);
+        // 删除所有相关的好友关系记录
+        if (sentFriendship != null) {
+            sentFriendship.remove();
+            friendshipMapper.updateById(sentFriendship);
+        }
+        if (receivedFriendship != null) {
+            receivedFriendship.remove();
+            friendshipMapper.updateById(receivedFriendship);
+        }
 
         log.info("用户{}删除了好友{}", userId, friendId);
     }
@@ -384,28 +413,44 @@ public class FriendService {
      * 判断是否为好友
      */
     public boolean isFriend(Long userId, Long friendId) {
-        LambdaQueryWrapper<Friendship> wrapper = new LambdaQueryWrapper<>();
-        wrapper.and(w -> w
-                .and(inner -> inner.eq(Friendship::getUserId, userId).eq(Friendship::getFriendId, friendId))
-                .or()
-                .and(inner -> inner.eq(Friendship::getUserId, friendId).eq(Friendship::getFriendId, userId)))
-                .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        // 查询我发起的好友关系
+        LambdaQueryWrapper<Friendship> sentWrapper = new LambdaQueryWrapper<>();
+        sentWrapper.eq(Friendship::getUserId, userId)
+                   .eq(Friendship::getFriendId, friendId)
+                   .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
         
-        return friendshipMapper.selectCount(wrapper) > 0;
+        if (friendshipMapper.selectCount(sentWrapper) > 0) {
+            return true;
+        }
+        
+        // 查询对方发起的好友关系
+        LambdaQueryWrapper<Friendship> receivedWrapper = new LambdaQueryWrapper<>();
+        receivedWrapper.eq(Friendship::getUserId, friendId)
+                       .eq(Friendship::getFriendId, userId)
+                       .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        
+        return friendshipMapper.selectCount(receivedWrapper) > 0;
     }
 
     /**
      * 获取好友数量
      */
     public int getFriendCount(Long userId) {
-        LambdaQueryWrapper<Friendship> wrapper = new LambdaQueryWrapper<>();
-        wrapper.and(w -> w
-                .eq(Friendship::getUserId, userId)
-                .or()
-                .eq(Friendship::getFriendId, userId))
-                .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        // 我发起的好友关系数量
+        LambdaQueryWrapper<Friendship> sentWrapper = new LambdaQueryWrapper<>();
+        sentWrapper.eq(Friendship::getUserId, userId)
+                   .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        long sentCount = friendshipMapper.selectCount(sentWrapper);
         
-        return friendshipMapper.selectCount(wrapper).intValue();
+        // 对方发起的好友关系数量
+        LambdaQueryWrapper<Friendship> receivedWrapper = new LambdaQueryWrapper<>();
+        receivedWrapper.eq(Friendship::getFriendId, userId)
+                       .eq(Friendship::getStatus, Friendship.STATUS_ACCEPTED);
+        long receivedCount = friendshipMapper.selectCount(receivedWrapper);
+        
+        // 需要去重：检查是否有双向记录的情况（即同一对好友有两条记录）
+        // 在当前设计中，好友关系是单向存储的，所以直接相加
+        return (int) (sentCount + receivedCount);
     }
 
     /**
