@@ -4,12 +4,11 @@
 
 ### 项目信息
 - **项目名称**：智慧自习室座位预约系统 (Smart Study Room Reservation System)
-- **项目代号**：Project_gavin_003
-- **技术栈**：Vue 3 + TypeScript + Spring Boot 3.2 + MySQL 8.0 + Redis
+- **仓库名称**：studyroom-reservation
+- **技术栈**：Vue 3 + TypeScript + Spring Boot 3.2 + MySQL 8.0
 - **目标用户**：高校学生、自习室管理员、系统管理员
 - **数据库表数量**：27张表
 - **功能模块数量**：15个模块
-- **预计开发周期**：10周
 
 ### 项目背景
 解决高校自习室管理中的痛点：
@@ -32,7 +31,173 @@
 
 ---
 
-## 功能模块总览
+## 快速开始
+
+### 环境要求
+
+| 工具 | 版本要求 | 说明 |
+|-----|---------|-----|
+| JDK | 21+ | 推荐 OpenJDK 21 |
+| Node.js | 18+ | 推荐 Node.js 20 LTS |
+| MySQL | 8.0+ | 数据库 |
+| Maven | 3.9+ | 后端构建 |
+| Git | 2.40+ | 版本控制 |
+
+### 方式一：使用脚本一键启动（推荐）
+
+#### macOS/Linux
+```bash
+# 1. 克隆项目
+git clone https://github.com/Garrick777/studyroom-reservation.git
+cd studyroom-reservation
+
+# 2. 初始化数据库（首次运行）
+./scripts/init_db.sh
+
+# 3. 启动服务
+./scripts/start.sh
+
+# 4. 停止服务
+./scripts/stop.sh
+
+# 5. 清理项目（可选）
+./scripts/clean.sh
+```
+
+#### Windows
+```batch
+:: 1. 克隆项目
+git clone https://github.com/Garrick777/studyroom-reservation.git
+cd studyroom-reservation
+
+:: 2. 初始化数据库（首次运行）
+scripts\init_db.bat
+
+:: 3. 启动服务
+scripts\start.bat
+
+:: 4. 停止服务
+scripts\stop.bat
+
+:: 5. 清理项目（可选）
+scripts\clean.bat
+```
+
+### 方式二：手动启动
+
+#### 1. 数据库初始化
+```bash
+# 创建数据库并导入数据
+mysql -u root -p < sql/studyroom_full.sql
+```
+
+#### 2. 启动后端
+```bash
+cd backend
+# 修改 application.yml 中的数据库配置（如需要）
+mvn spring-boot:run -DskipTests
+```
+
+#### 3. 启动前端
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+### 访问地址
+
+| 服务 | 地址 |
+|-----|-----|
+| 前端 | http://localhost:3000 |
+| 后端API | http://localhost:9090/api |
+| API文档 | http://localhost:9090/doc.html |
+
+### 测试账号
+
+| 角色 | 用户名 | 密码 | 说明 |
+|-----|-------|-----|-----|
+| 超级管理员 | superadmin | 123456 | 系统最高权限 |
+| 自习室管理员 | admin1 | 123456 | 管理自习室 |
+| 学生 | zhangsan | 123456 | 普通学生 |
+| 学生 | lisi | 123456 | 普通学生 |
+
+---
+
+## 项目结构
+
+```
+studyroom-reservation/
+├── backend/                          # 后端项目
+│   ├── src/main/java/com/studyroom/
+│   │   ├── StudyRoomApplication.java # 启动类
+│   │   ├── config/                   # 配置类
+│   │   │   ├── SecurityConfig.java
+│   │   │   ├── CorsConfig.java
+│   │   │   └── SwaggerConfig.java
+│   │   ├── controller/               # 控制器
+│   │   │   ├── AuthController.java
+│   │   │   ├── RoomController.java
+│   │   │   ├── ReservationController.java
+│   │   │   ├── UserController.java
+│   │   │   ├── CheckInController.java
+│   │   │   ├── GoalController.java
+│   │   │   ├── AchievementController.java
+│   │   │   ├── GroupController.java
+│   │   │   ├── FriendController.java
+│   │   │   ├── ShopController.java
+│   │   │   └── SuperAdminController.java
+│   │   ├── service/                  # 服务层
+│   │   ├── mapper/                   # MyBatis Mapper
+│   │   ├── entity/                   # 实体类
+│   │   ├── common/                   # 公共组件
+│   │   ├── exception/                # 异常处理
+│   │   ├── security/                 # 安全相关
+│   │   └── util/                     # 工具类
+│   ├── src/main/resources/
+│   │   └── application.yml           # 配置文件
+│   └── pom.xml
+│
+├── frontend/                         # 前端项目
+│   ├── src/
+│   │   ├── main.ts                   # 入口文件
+│   │   ├── App.vue                   # 根组件
+│   │   ├── api/                      # API接口
+│   │   ├── views/                    # 页面
+│   │   │   ├── auth/                 # 登录注册
+│   │   │   ├── student/              # 学生端页面
+│   │   │   ├── admin/                # 管理员页面
+│   │   │   └── super-admin/          # 超管页面
+│   │   ├── components/               # 组件
+│   │   │   └── layout/               # 布局组件
+│   │   ├── stores/                   # Pinia状态
+│   │   ├── router/                   # 路由
+│   │   ├── utils/                    # 工具
+│   │   └── styles/                   # 样式
+│   ├── public/
+│   │   └── images/                   # 静态图片
+│   ├── vite.config.ts
+│   └── package.json
+│
+├── sql/                              # SQL脚本
+│   └── studyroom_full.sql            # 完整数据库脚本
+│
+├── scripts/                          # 启动脚本
+│   ├── start.sh / start.bat          # 启动服务
+│   ├── stop.sh / stop.bat            # 停止服务
+│   ├── init_db.sh / init_db.bat      # 初始化数据库
+│   └── clean.sh / clean.bat          # 清理项目
+│
+└── docs/                             # 文档
+    ├── README.md                     # 开发手册(本文档)
+    ├── database.md                   # 数据库设计
+    ├── api.md                        # API文档
+    └── todo.md                       # 任务清单
+```
+
+---
+
+## 功能模块
 
 ### 模块清单
 
@@ -44,7 +209,7 @@
 | 4 | 信用积分 | 积分变动、违约处理 | credit_record, violation_record |
 | 5 | 黑名单管理 | 黑名单加入/解除 | blacklist |
 | 6 | 公告管理 | 公告发布、查看 | notice |
-| 7 | 消息通知 | 站内消息、提醒 | message, reminder |
+| 7 | 消息通知 | 站内消息、提醒 | message |
 | 8 | 收藏功能 | 收藏自习室/座位 | favorite |
 | 9 | 每日打卡 | 打卡签到、连续打卡 | check_in_record |
 | 10 | 学习目标 | 目标设定、进度跟踪 | study_goal |
@@ -64,150 +229,17 @@
 
 ---
 
-## 开发环境
+## 端口配置
 
-### 环境要求
-
-| 工具 | 版本要求 | 说明 |
-|-----|---------|-----|
-| JDK | 21+ | 推荐 OpenJDK 21 |
-| Node.js | 18+ | 推荐 Node.js 20 LTS |
-| MySQL | 8.0+ | 数据库 |
-| Redis | 7.0+ | 缓存 |
-| Maven | 3.9+ | 后端构建 |
-| Git | 2.40+ | 版本控制 |
-
-### IDE推荐
-- **后端**：IntelliJ IDEA 2024+
-- **前端**：VS Code + Volar 插件
+| 服务 | 端口 | 说明 |
+|-----|-----|-----|
+| 前端 | 3000 | Vite开发服务器 |
+| 后端 | 9090 | Spring Boot |
+| MySQL | 3306 | 数据库 |
 
 ---
 
-## 项目结构
-
-```
-Project_gavin_003/
-├── backend/                          # 后端项目
-│   ├── src/main/java/com/studyroom/
-│   │   ├── StudyRoomApplication.java # 启动类
-│   │   ├── config/                   # 配置类
-│   │   │   ├── SecurityConfig.java
-│   │   │   ├── RedisConfig.java
-│   │   │   ├── CorsConfig.java
-│   │   │   └── SwaggerConfig.java
-│   │   ├── controller/               # 控制器
-│   │   │   ├── AuthController.java
-│   │   │   ├── RoomController.java
-│   │   │   ├── ReservationController.java
-│   │   │   ├── UserController.java
-│   │   │   ├── CheckInController.java
-│   │   │   ├── GoalController.java
-│   │   │   ├── AchievementController.java
-│   │   │   ├── GroupController.java
-│   │   │   ├── FriendController.java
-│   │   │   ├── ShopController.java
-│   │   │   └── admin/
-│   │   │       ├── AdminRoomController.java
-│   │   │       ├── AdminUserController.java
-│   │   │       ├── AdminStatsController.java
-│   │   │       └── AdminShopController.java
-│   │   ├── service/                  # 服务层
-│   │   │   ├── AuthService.java
-│   │   │   ├── RoomService.java
-│   │   │   ├── SeatService.java
-│   │   │   ├── ReservationService.java
-│   │   │   ├── CreditService.java
-│   │   │   ├── CheckInService.java
-│   │   │   ├── GoalService.java
-│   │   │   ├── AchievementService.java
-│   │   │   ├── GroupService.java
-│   │   │   ├── FriendService.java
-│   │   │   ├── ShopService.java
-│   │   │   ├── MessageService.java
-│   │   │   ├── NoticeService.java
-│   │   │   └── StatsService.java
-│   │   ├── mapper/                   # MyBatis Mapper
-│   │   ├── entity/                   # 实体类
-│   │   ├── dto/                      # 数据传输对象
-│   │   ├── vo/                       # 视图对象
-│   │   ├── common/                   # 公共组件
-│   │   │   ├── Result.java
-│   │   │   ├── ResultCode.java
-│   │   │   └── PageResult.java
-│   │   ├── exception/                # 异常处理
-│   │   ├── security/                 # 安全相关
-│   │   ├── scheduler/                # 定时任务
-│   │   └── util/                     # 工具类
-│   ├── src/main/resources/
-│   │   ├── application.yml           # 主配置
-│   │   ├── application-dev.yml       # 开发环境
-│   │   ├── application-prod.yml      # 生产环境
-│   │   └── mapper/                   # MyBatis XML
-│   └── pom.xml
-│
-├── frontend/                         # 前端项目
-│   ├── src/
-│   │   ├── main.ts                   # 入口文件
-│   │   ├── App.vue                   # 根组件
-│   │   ├── api/                      # API接口
-│   │   │   ├── auth.ts
-│   │   │   ├── room.ts
-│   │   │   ├── reservation.ts
-│   │   │   ├── checkIn.ts
-│   │   │   ├── goal.ts
-│   │   │   ├── achievement.ts
-│   │   │   ├── group.ts
-│   │   │   ├── friend.ts
-│   │   │   ├── shop.ts
-│   │   │   └── admin.ts
-│   │   ├── views/                    # 页面
-│   │   │   ├── login/
-│   │   │   ├── home/
-│   │   │   ├── reserve/
-│   │   │   ├── my/
-│   │   │   ├── profile/
-│   │   │   ├── checkin/
-│   │   │   ├── goal/
-│   │   │   ├── achievement/
-│   │   │   ├── group/
-│   │   │   ├── friend/
-│   │   │   ├── shop/
-│   │   │   ├── ranking/
-│   │   │   └── admin/
-│   │   ├── components/               # 组件
-│   │   │   ├── layout/
-│   │   │   ├── SeatMap.vue
-│   │   │   ├── RoomCard.vue
-│   │   │   ├── ReservationCard.vue
-│   │   │   ├── AchievementBadge.vue
-│   │   │   ├── GoalProgress.vue
-│   │   │   └── RankingList.vue
-│   │   ├── stores/                   # Pinia状态
-│   │   ├── router/                   # 路由
-│   │   ├── utils/                    # 工具
-│   │   ├── styles/                   # 样式
-│   │   └── types/                    # 类型定义
-│   ├── public/
-│   ├── index.html
-│   ├── vite.config.ts
-│   ├── tsconfig.json
-│   └── package.json
-│
-├── docs/                             # 文档
-│   ├── README.md                     # 开发手册(本文档)
-│   ├── database.md                   # 数据库设计
-│   ├── api.md                        # API文档
-│   └── todo.md                       # 任务清单
-│
-└── sql/                              # SQL脚本
-    ├── schema.sql                    # 建表脚本(27张表)
-    ├── init_data.sql                 # 初始数据
-    └── test_data.sql                 # 测试数据
-```
-
----
-
-## 数据库设计概览
+## 数据库设计
 
 详见 [database.md](./database.md)
 
@@ -223,9 +255,7 @@ Project_gavin_003/
 | | time_slot | 时段表 |
 | | favorite | 收藏表 |
 | | seat_review | 座位评价表 |
-| | room_daily_stats | 每日统计表 |
 | **预约相关** | reservation | 预约表 |
-| | reminder | 预约提醒表 |
 | **信用积分** | credit_record | 积分记录表 |
 | | violation_record | 违约记录表 |
 | **打卡目标** | check_in_record | 签到打卡表 |
@@ -238,14 +268,10 @@ Project_gavin_003/
 | | notice | 公告表 |
 | **积分商城** | point_product | 商品表 |
 | | point_exchange | 兑换记录表 |
-| **数据统计** | ranking_snapshot | 排行榜快照表 |
-| **反馈建议** | feedback | 反馈表 |
-| **系统配置** | system_config | 系统配置表 |
-| | operation_log | 操作日志表 |
 
 ---
 
-## API接口设计概览
+## API接口
 
 详见 [api.md](./api.md)
 
@@ -257,151 +283,47 @@ Project_gavin_003/
 ```json
 {
   "code": 200,
-  "message": "success",
+  "message": "操作成功",
   "data": {}
 }
 ```
 
-### 核心接口模块
+### 核心接口
 
-#### 1. 认证模块 `/api/auth`
+#### 认证模块 `/api/auth`
 ```
 POST   /login              用户登录
 POST   /register           用户注册
-POST   /logout             退出登录
 GET    /info               获取当前用户信息
 PUT    /password           修改密码
 ```
 
-#### 2. 自习室模块 `/api/rooms`
+#### 自习室模块 `/api/rooms`
 ```
 GET    /                   获取自习室列表
 GET    /{id}               获取自习室详情
-GET    /{id}/seats         获取座位列表(含预约状态)
-GET    /{id}/available     获取可用时段
-POST   /{id}/favorite      收藏自习室
-DELETE /{id}/favorite      取消收藏
+GET    /{id}/seats         获取座位列表
 ```
 
-#### 3. 预约模块 `/api/reservations`
+#### 预约模块 `/api/reservations`
 ```
 POST   /                   创建预约
 GET    /                   获取我的预约列表
-GET    /{id}               获取预约详情
 PUT    /{id}/sign-in       签到
 PUT    /{id}/sign-out      签退
 PUT    /{id}/leave         暂离
 PUT    /{id}/return        暂离返回
 PUT    /{id}/cancel        取消预约
-POST   /{id}/review        评价座位
 ```
 
-#### 4. 每日打卡 `/api/checkin`
+#### 超级管理员 `/api/super-admin`
 ```
-POST   /                   每日打卡
-GET    /today              今日打卡状态
-GET    /calendar           打卡日历
-GET    /stats              打卡统计
+GET    /stats              获取统计数据
+GET    /chart-data         获取图表数据
+GET    /users              用户管理
+GET    /admins             管理员管理
+DELETE /shop/products/{id} 删除商品
 ```
-
-#### 5. 学习目标 `/api/goals`
-```
-POST   /                   创建目标
-GET    /                   获取我的目标列表
-GET    /{id}               获取目标详情
-PUT    /{id}               更新目标
-DELETE /{id}               删除目标
-```
-
-#### 6. 成就系统 `/api/achievements`
-```
-GET    /                   获取所有成就列表
-GET    /my                 获取我的成就
-POST   /{id}/claim         领取成就奖励
-```
-
-#### 7. 好友系统 `/api/friends`
-```
-POST   /request            发送好友请求
-GET    /requests           获取好友请求列表
-PUT    /requests/{id}      处理好友请求
-GET    /                   获取好友列表
-DELETE /{id}               删除好友
-```
-
-#### 8. 学习小组 `/api/groups`
-```
-POST   /                   创建小组
-GET    /                   获取小组列表
-GET    /my                 获取我的小组
-GET    /{id}               获取小组详情
-POST   /{id}/join          申请加入
-PUT    /{id}/approve       审批申请
-DELETE /{id}/leave         退出小组
-```
-
-#### 9. 积分商城 `/api/shop`
-```
-GET    /products           获取商品列表
-GET    /products/{id}      获取商品详情
-POST   /exchange           积分兑换
-GET    /exchanges          我的兑换记录
-```
-
-#### 10. 排行榜 `/api/ranking`
-```
-GET    /hours              学习时长榜
-GET    /checkin            打卡天数榜
-GET    /points             积分排行榜
-GET    /groups             小组排行榜
-```
-
----
-
-## 前端页面设计
-
-### 学生端页面路由
-
-| 路由 | 页面 | 说明 |
-|-----|-----|-----|
-| /login | 登录页 | 学号密码登录 |
-| /register | 注册页 | 学生注册 |
-| /home | 首页 | 自习室列表、公告、快捷入口 |
-| /room/:id | 自习室详情 | 自习室信息、座位预览 |
-| /reserve/:roomId | 预约页 | 日期时段选择、座位图选座 |
-| /my/reservations | 我的预约 | 预约列表、签到签退操作 |
-| /my/reservations/:id | 预约详情 | 详情、操作按钮 |
-| /profile | 个人中心 | 信息编辑、密码修改 |
-| /credit | 信用记录 | 积分变动历史 |
-| /violations | 违约记录 | 违约详情 |
-| /checkin | 打卡签到 | 每日打卡、日历展示 |
-| /goals | 学习目标 | 目标列表、进度跟踪 |
-| /achievements | 成就中心 | 成就展示、奖励领取 |
-| /friends | 好友 | 好友列表、添加好友 |
-| /groups | 学习小组 | 小组列表、小组详情 |
-| /shop | 积分商城 | 商品浏览、兑换 |
-| /ranking | 排行榜 | 多维度排行 |
-| /notices | 公告列表 | 系统公告 |
-| /feedback | 反馈建议 | 提交反馈 |
-
-### 管理端页面路由
-
-| 路由 | 页面 | 说明 |
-|-----|-----|-----|
-| /admin | 控制台 | 数据概览、快捷入口 |
-| /admin/rooms | 自习室管理 | 增删改查 |
-| /admin/rooms/:id/seats | 座位配置 | 可视化布局 |
-| /admin/reservations | 预约管理 | 所有预约记录 |
-| /admin/users | 用户管理 | 用户列表、状态控制 |
-| /admin/violations | 违约管理 | 违约记录处理 |
-| /admin/blacklist | 黑名单 | 禁止预约用户 |
-| /admin/notices | 公告管理 | 发布编辑 |
-| /admin/achievements | 成就管理 | 成就配置 |
-| /admin/shop | 商城管理 | 商品管理、兑换审核 |
-| /admin/feedback | 反馈管理 | 反馈处理 |
-| /admin/stats | 数据统计 | 图表报表 |
-| /admin/settings | 系统设置 | 配置项管理 |
-| /admin/logs | 操作日志 | 日志查询 |
 
 ---
 
@@ -418,7 +340,6 @@ GET    /groups             小组排行榜
 | 签到超时时间 | 30分钟 | 超过30分钟未签到自动违约 |
 | 免费取消时间 | 1小时 | 开始前1小时可免费取消 |
 | 暂离最大时长 | 30分钟 | 暂离超过30分钟自动签退 |
-| 暂离最大次数 | 2次 | 单次预约最多暂离2次 |
 
 ### 信用积分规则
 
@@ -430,160 +351,52 @@ GET    /groups             小组排行榜
 | 暂离超时 | -8 | 占用座位不使用 |
 | 每月自动恢复 | +5 | 最高恢复至100分 |
 
-### 积分奖励规则
+---
 
-| 行为 | 积分 | 经验 | 说明 |
-|-----|-----|-----|-----|
-| 每日首次打卡 | +5 | +10 | 基础奖励 |
-| 连续打卡(每天额外) | +2 | +5 | 连续越久奖励越多 |
-| 完成学习(每小时) | +10 | +20 | 按实际时长计算 |
-| 完成学习目标 | +50 | +100 | 目标完成奖励 |
-| 解锁成就 | 不等 | 不等 | 按成就稀有度 |
+## 常见问题
 
-### 等级经验规则
+### Q1: JAVA_HOME 未设置
+脚本会自动检测并设置 JAVA_HOME。如果仍有问题，手动设置：
 
-| 等级 | 所需经验 | 特权 |
-|-----|---------|-----|
-| 1 | 0 | 基础功能 |
-| 2 | 100 | 解锁收藏功能 |
-| 3 | 250 | 解锁学习目标 |
-| 4 | 500 | 解锁创建小组 |
-| 5 | 1000 | 优先预约权 |
-| 6+ | 按公式递增 | 更多特权 |
+**macOS:**
+```bash
+export JAVA_HOME=$(/usr/libexec/java_home)
+```
+
+**Windows:**
+```batch
+set JAVA_HOME=C:\Program Files\Java\jdk-21
+```
+
+### Q2: 数据库连接失败
+检查 `backend/src/main/resources/application.yml` 中的配置：
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/studyroom?useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456789
+```
+
+### Q3: 端口被占用
+使用停止脚本释放端口：
+```bash
+./scripts/stop.sh    # macOS/Linux
+scripts\stop.bat     # Windows
+```
+
+### Q4: 前端跨域问题
+开发环境已配置 Vite 代理，生产环境需配置 Nginx：
+```nginx
+location /api {
+    proxy_pass http://localhost:9090;
+}
+```
 
 ---
 
-## 开发阶段规划（10周）
+## Git 提交规范
 
-### 第一阶段：项目初始化（第1周）
-- 后端：Spring Boot + Security + JWT + MyBatis Plus
-- 前端：Vue 3 + TypeScript + Element Plus + Pinia
-
-### 第二阶段：认证模块（第2周）
-- 用户注册/登录
-- JWT鉴权
-- 个人信息管理
-
-### 第三阶段：自习室模块（第3周）
-- 自习室CRUD
-- 座位管理
-- 座位图可视化
-
-### 第四阶段：预约模块（第4周）
-- 预约流程
-- 签到签退
-- 暂离功能
-- 定时任务
-
-### 第五阶段：信用积分模块（第5周）
-- 积分变动
-- 违约处理
-- 黑名单管理
-
-### 第六阶段：打卡与目标（第6周）
-- 每日打卡
-- 学习目标
-- 进度跟踪
-
-### 第七阶段：成就系统（第7周）
-- 成就定义
-- 成就解锁
-- 奖励领取
-
-### 第八阶段：社交功能（第8周）
-- 好友系统
-- 学习小组
-- 消息通知
-
-### 第九阶段：积分商城与排行（第9周）
-- 商品管理
-- 积分兑换
-- 排行榜
-
-### 第十阶段：优化完善（第10周）
-- 性能优化
-- 测试修复
-- 文档完善
-- 部署上线
-
----
-
-## 快速开始
-
-### 1. 克隆项目
-```bash
-git clone <repository-url>
-cd Project_gavin_003
-```
-
-### 2. 数据库初始化
-```bash
-# 创建数据库并执行脚本
-mysql -u root -p
-CREATE DATABASE study_room_db DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-exit;
-
-mysql -u root -p study_room_db < sql/schema.sql
-mysql -u root -p study_room_db < sql/init_data.sql
-```
-
-### 3. 启动Redis
-```bash
-redis-server
-```
-
-### 4. 启动后端
-```bash
-cd backend
-# 修改 application-dev.yml 中的数据库配置
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
-```
-
-### 5. 启动前端
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### 6. 访问应用
-- 前端：http://localhost:5173
-- 后端API：http://localhost:8080
-- Swagger文档：http://localhost:8080/swagger-ui.html
-
----
-
-## 测试账号
-
-| 角色 | 学号/用户名 | 密码 | 说明 |
-|-----|-----------|-----|-----|
-| 超级管理员 | admin | admin123 | 系统管理员 |
-| 自习室管理员 | manager | manager123 | 自习室管理 |
-| 学生1 | 2021001001 | 123456 | 普通学生 |
-| 学生2 | 2021001002 | 123456 | 普通学生 |
-| 学生3 | 2021001003 | 123456 | 低信用分学生 |
-
----
-
-## 端口配置
-
-| 服务 | 端口 | 说明 |
-|-----|-----|-----|
-| 前端 | 5173 | Vite开发服务器 |
-| 后端 | 8080 | Spring Boot |
-| MySQL | 3306 | 数据库 |
-| Redis | 6379 | 缓存 |
-
----
-
-## Git分支策略
-
-- `main` - 主分支，生产环境
-- `develop` - 开发分支
-- `feature/*` - 功能分支
-- `bugfix/*` - Bug修复分支
-
-### 提交规范
 ```
 feat: 新功能
 fix: Bug修复
@@ -596,46 +409,25 @@ chore: 构建/工具
 
 ---
 
-## 常见问题
-
-### Q1: Redis连接失败
-确保Redis服务已启动：
-```bash
-redis-cli ping  # 应返回PONG
-```
-
-### Q2: 数据库连接失败
-检查 `application-dev.yml` 中的配置：
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/study_room_db?useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: your_password
-```
-
-### Q3: 前端跨域问题
-开发环境已配置代理，生产环境需配置Nginx：
-```nginx
-location /api {
-    proxy_pass http://localhost:8080;
-}
-```
-
----
-
 ## 更新日志
 
-### v2.0.0 (当前版本)
-- 扩展至27张数据库表
-- 新增15个功能模块
+### v2.1.0 (当前版本) - 2026-01-23
+- 添加 Windows 系统启动脚本
+- 修复商城商品删除功能
+- 修复路由跳转问题
+- 修复好友管理功能
+- 优化 JAVA_HOME 自动检测
+
+### v2.0.0 - 2026-01-21
+- 完整27张数据库表
+- 15个功能模块
 - 添加成就系统、学习小组、积分商城等特色功能
 
-### v1.0.0 (初始版本)
+### v1.0.0 - 初始版本
 - 基础预约功能
 - 信用积分体系
 
 ---
 
 **作者**：Gavin  
-**更新日期**：2026-01-21
+**更新日期**：2026-01-23
