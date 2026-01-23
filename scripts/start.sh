@@ -3,6 +3,15 @@
 # 智慧自习室系统 - 一键启动脚本
 # =====================================================
 
+# =====================================================
+# 0. 最先设置 JAVA_HOME (macOS) - 必须在 set -e 之前
+# =====================================================
+if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
+    if [ -x /usr/libexec/java_home ]; then
+        export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
+    fi
+fi
+
 set -e
 
 # 颜色定义
@@ -28,6 +37,11 @@ echo -e "${CYAN}   智慧自习室系统 - 一键启动${NC}"
 echo -e "${CYAN}================================================${NC}"
 echo ""
 
+# 显示 JAVA_HOME
+if [ -n "$JAVA_HOME" ]; then
+    echo -e "${YELLOW}JAVA_HOME: $JAVA_HOME${NC}"
+fi
+
 # 函数: 检查端口是否被占用
 check_port() {
     local port=$1
@@ -48,16 +62,6 @@ kill_port() {
         sleep 1
     fi
 }
-
-# =====================================================
-# 0. 自动设置JAVA_HOME (macOS)
-# =====================================================
-if [ -z "$JAVA_HOME" ]; then
-    if [ -x /usr/libexec/java_home ]; then
-        export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
-        echo -e "${YELLOW}自动设置 JAVA_HOME: $JAVA_HOME${NC}"
-    fi
-fi
 
 # =====================================================
 # 1. 检查并释放端口
