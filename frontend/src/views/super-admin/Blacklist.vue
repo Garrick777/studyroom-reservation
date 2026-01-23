@@ -185,36 +185,36 @@ onMounted(() => {
         </div>
       </template>
       
-      <el-table :data="blacklist" v-loading="loading" stripe>
-        <el-table-column label="用户" width="150">
+      <el-table :data="blacklist" v-loading="loading" stripe table-layout="fixed">
+        <el-table-column label="用户" width="140">
           <template #default="{ row }">
             <div v-if="row.user">
               <div>{{ row.user.username }}</div>
               <small class="text-muted">{{ row.user.studentNo }}</small>
             </div>
-            <span v-else>用户ID: {{ row.userId }}</span>
+            <span v-else>ID: {{ row.userId }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="reason" label="原因" min-width="200" show-overflow-tooltip />
-        <el-table-column label="加入时信用分" width="120" align="center">
+        <el-table-column prop="reason" label="原因" min-width="150" show-overflow-tooltip />
+        <el-table-column label="信用分" width="80" align="center">
           <template #default="{ row }">
             <el-tag type="danger" size="small">{{ row.creditScoreWhenAdded || '-' }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="startTime" label="开始时间" width="170" />
-        <el-table-column label="结束时间" width="170">
+        <el-table-column prop="startTime" label="开始时间" width="160" show-overflow-tooltip />
+        <el-table-column label="结束时间" width="160" show-overflow-tooltip>
           <template #default="{ row }">
             {{ row.endTime || '永久' }}
           </template>
         </el-table-column>
-        <el-table-column label="状态" width="100" align="center">
+        <el-table-column label="状态" width="80" align="center">
           <template #default="{ row }">
             <el-tag :type="getStatusTag(row).type" size="small">
               {{ getStatusTag(row).text }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="解除信息" width="200">
+        <el-table-column label="解除信息" min-width="140" show-overflow-tooltip>
           <template #default="{ row }">
             <template v-if="row.released === 1">
               <div class="text-muted">{{ row.releaseTime }}</div>
@@ -223,7 +223,7 @@ onMounted(() => {
             <span v-else>-</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100" fixed="right">
+        <el-table-column label="操作" width="80" fixed="right">
           <template #default="{ row }">
             <el-button
               v-if="row.released === 0"

@@ -198,6 +198,24 @@ const superAdminRoutes: RouteRecordRaw[] = [
         meta: { title: '成就管理', roles: ['SUPER_ADMIN'] }
       },
       {
+        path: 'products',
+        name: 'ProductManagement',
+        component: () => import('@/views/super-admin/Products.vue'),
+        meta: { title: '商品管理', roles: ['SUPER_ADMIN'] }
+      },
+      {
+        path: 'orders',
+        name: 'OrderManagement',
+        component: () => import('@/views/super-admin/Orders.vue'),
+        meta: { title: '订单管理', roles: ['SUPER_ADMIN'] }
+      },
+      {
+        path: 'appeals',
+        name: 'AppealManagement',
+        component: () => import('@/views/super-admin/Appeals.vue'),
+        meta: { title: '申诉管理', roles: ['SUPER_ADMIN'] }
+      },
+      {
         path: 'blacklist',
         name: 'BlacklistManagement',
         component: () => import('@/views/super-admin/Blacklist.vue'),

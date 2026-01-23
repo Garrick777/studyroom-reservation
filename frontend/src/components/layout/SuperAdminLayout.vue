@@ -12,7 +12,10 @@ import {
   Settings,
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  ShoppingBag,
+  ShoppingCart,
+  MessageSquare
 } from 'lucide-vue-next'
 
 const router = useRouter()
@@ -27,6 +30,9 @@ const navItems = [
   { path: '/super/rooms', icon: Building2, label: '自习室管理' },
   { path: '/super/admins', icon: UserCog, label: '管理员管理' },
   { path: '/super/achievements', icon: Trophy, label: '成就管理' },
+  { path: '/super/products', icon: ShoppingBag, label: '商品管理' },
+  { path: '/super/orders', icon: ShoppingCart, label: '订单管理' },
+  { path: '/super/appeals', icon: MessageSquare, label: '申诉管理' },
   { path: '/super/blacklist', icon: UserX, label: '黑名单管理' },
   { path: '/super/settings', icon: Settings, label: '系统设置' }
 ]

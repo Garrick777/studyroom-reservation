@@ -12,9 +12,13 @@
     <div class="filter-bar">
       <el-select v-model="filters.category" placeholder="分类" clearable style="width: 140px">
         <el-option label="学习成就" value="STUDY" />
-        <el-option label="打卡成就" value="CHECK_IN" />
+        <el-option label="打卡成就" value="CHECKIN" />
+        <el-option label="预约成就" value="RESERVATION" />
         <el-option label="社交成就" value="SOCIAL" />
         <el-option label="特殊成就" value="SPECIAL" />
+        <el-option label="信用成就" value="CREDIT" />
+        <el-option label="目标成就" value="GOAL" />
+        <el-option label="积分成就" value="POINTS" />
       </el-select>
       <el-select v-model="filters.rarity" placeholder="稀有度" clearable style="width: 120px">
         <el-option label="普通" value="COMMON" />
@@ -38,12 +42,13 @@
     </div>
 
     <!-- 成就表格 -->
-    <el-table :data="achievements" v-loading="loading" style="width: 100%">
-      <el-table-column label="成就" width="280">
+    <el-table :data="achievements" v-loading="loading" table-layout="fixed">
+      <el-table-column label="成就" min-width="280">
         <template #default="{ row }">
           <div class="achievement-cell">
             <div class="achievement-icon" :style="{ backgroundColor: row.badgeColor }">
-              {{ row.icon }}
+              <span v-if="isEmoji(row.icon)">{{ row.icon }}</span>
+              <Icon v-else :icon="formatIconName(row.icon)" :width="24" :height="24" color="#fff" />
             </div>
             <div class="achievement-info">
               <div class="achievement-name">{{ row.name }}</div>
@@ -56,20 +61,20 @@
       <el-table-column label="分类" width="100">
         <template #default="{ row }">
           <el-tag :type="getCategoryType(row.category)" size="small">
-            {{ getCategoryName(row.category) }}
+            {{ getCategoryNameLocal(row.category) }}
           </el-tag>
         </template>
       </el-table-column>
       
-      <el-table-column label="稀有度" width="90">
+      <el-table-column label="稀有度" width="80">
         <template #default="{ row }">
-          <span :class="['rarity-badge', row.rarity.toLowerCase()]">
+          <span :class="['rarity-badge', row.rarity?.toLowerCase()]">
             {{ getRarityName(row.rarity) }}
           </span>
         </template>
       </el-table-column>
       
-      <el-table-column label="达成条件" width="200">
+      <el-table-column label="达成条件" min-width="140">
         <template #default="{ row }">
           <div class="condition-text">
             {{ getConditionTypeName(row.conditionType) }} ≥ {{ row.conditionValue }}
@@ -77,16 +82,16 @@
         </template>
       </el-table-column>
       
-      <el-table-column label="奖励" width="140">
+      <el-table-column label="奖励" width="100">
         <template #default="{ row }">
           <div class="reward-cell">
-            <span>💰 {{ row.rewardPoints }}</span>
-            <span>✨ {{ row.rewardExp }}</span>
+            <span>💰{{ row.rewardPoints }}</span>
+            <span>✨{{ row.rewardExp }}</span>
           </div>
         </template>
       </el-table-column>
       
-      <el-table-column label="隐藏" width="70">
+      <el-table-column label="隐藏" width="60">
         <template #default="{ row }">
           <el-tag :type="row.isHidden ? 'warning' : 'info'" size="small">
             {{ row.isHidden ? '是' : '否' }}
@@ -94,7 +99,7 @@
         </template>
       </el-table-column>
       
-      <el-table-column label="状态" width="80">
+      <el-table-column label="状态" width="70">
         <template #default="{ row }">
           <el-switch 
             v-model="row.status" 
@@ -105,7 +110,7 @@
         </template>
       </el-table-column>
       
-      <el-table-column label="操作" width="140" fixed="right">
+      <el-table-column label="操作" width="120" fixed="right">
         <template #default="{ row }">
           <el-button type="primary" link size="small" @click="showEditDialog(row)">
             编辑
@@ -255,9 +260,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { Plus, Search } from '@element-plus/icons-vue'
+import { Icon } from '@iconify/vue'
 import {
   getAdminAchievements,
   createAchievement,
@@ -268,6 +274,24 @@ import {
   getRarityName,
   type Achievement
 } from '@/api/achievement'
+
+// 将 mdi-xxx-xxx 转换为 mdi:xxx-xxx 格式
+const formatIconName = (icon: string): string => {
+  if (!icon) return 'mdi:trophy'
+  // 如果已经是 mdi: 格式，直接返回
+  if (icon.startsWith('mdi:')) return icon
+  // 将 mdi-xxx 转换为 mdi:xxx
+  if (icon.startsWith('mdi-')) return 'mdi:' + icon.slice(4)
+  // 如果是 emoji 或其他，返回默认图标
+  if (icon.length <= 2) return icon // emoji
+  return 'mdi:' + icon
+}
+
+// 检查是否是 emoji
+const isEmoji = (str: string): boolean => {
+  if (!str) return false
+  return str.length <= 2 || /\p{Extended_Pictographic}/u.test(str)
+}
 
 // 状态
 const loading = ref(false)
@@ -321,10 +345,31 @@ const getCategoryType = (category: string) => {
   const types: Record<string, string> = {
     STUDY: 'primary',
     CHECK_IN: 'success',
+    CHECKIN: 'success',
+    RESERVATION: '',
     SOCIAL: 'warning',
-    SPECIAL: 'danger'
+    SPECIAL: 'danger',
+    CREDIT: 'info',
+    GOAL: '',
+    POINTS: 'warning'
   }
   return types[category] || 'info'
+}
+
+// 获取分类名称（本地备用）
+const getCategoryNameLocal = (category: string) => {
+  const names: Record<string, string> = {
+    STUDY: '学习成就',
+    CHECK_IN: '打卡成就',
+    CHECKIN: '打卡成就',
+    RESERVATION: '预约成就',
+    SOCIAL: '社交成就',
+    SPECIAL: '特殊成就',
+    CREDIT: '信用成就',
+    GOAL: '目标成就',
+    POINTS: '积分成就'
+  }
+  return names[category] || category
 }
 
 // 获取条件类型名称
