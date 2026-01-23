@@ -1704,23 +1704,23 @@ SELECT '消息数量：' AS label, COUNT(*) AS count FROM message;
 
 -- 插入示例商品数据
 INSERT INTO `point_product` (`name`, `description`, `image`, `category`, `points_cost`, `stock`, `limit_per_user`, `status`, `sort_order`) VALUES
-('VIP学习座位1天', '体验VIP专属座位，享受更舒适的学习环境', '/images/shop/vip-seat.png', 'VIRTUAL', 50, -1, 3, 1, 1),
-('延时签到券', '预约后可延迟30分钟签到，不计违约', '/images/shop/delay-ticket.png', 'COUPON', 30, -1, 5, 1, 2),
-('优先预约特权', '高峰时段优先预约权限（3天有效）', '/images/shop/priority.png', 'VIRTUAL', 100, -1, 1, 1, 3),
-('学习小台灯', '便携式护眼小台灯，USB充电', '/images/shop/lamp.png', 'PHYSICAL', 200, 50, 1, 1, 4),
-('精美笔记本', '高品质皮面笔记本，A5尺寸', '/images/shop/notebook.png', 'PHYSICAL', 80, 100, 2, 1, 5),
-('定制U盘 32G', '学习资料存储神器，精美定制款', '/images/shop/usb.png', 'PHYSICAL', 150, 30, 1, 1, 6),
-('咖啡厅代金券', '校园咖啡厅10元代金券', '/images/shop/coffee.png', 'COUPON', 60, 200, 5, 1, 7),
-('打印代金券', '图书馆打印室5元代金券', '/images/shop/print.png', 'COUPON', 25, 500, 10, 1, 8),
-('学霸徽章', '限量版学霸徽章，彰显学习成就', '/images/shop/badge.png', 'PHYSICAL', 300, 20, 1, 1, 9),
-('年度VIP会员', '一年VIP会员资格，享受所有特权', '/images/shop/vip-year.png', 'VIRTUAL', 500, 10, 1, 1, 10);
+('VIP学习座位1天', '体验VIP专属座位，享受更舒适的学习环境', '/images/shop/vip-seat.svg', 'VIRTUAL', 50, -1, 3, 1, 1),
+('延时签到券', '预约后可延迟30分钟签到，不计违约', '/images/shop/delay-ticket.svg', 'COUPON', 30, -1, 5, 1, 2),
+('优先预约特权', '高峰时段优先预约权限（3天有效）', '/images/shop/priority.svg', 'VIRTUAL', 100, -1, 1, 1, 3),
+('学习小台灯', '便携式护眼小台灯，USB充电', '/images/shop/lamp.svg', 'PHYSICAL', 200, 50, 1, 1, 4),
+('精美笔记本', '高品质皮面笔记本，A5尺寸', '/images/shop/notebook.svg', 'PHYSICAL', 80, 100, 2, 1, 5),
+('定制U盘 32G', '学习资料存储神器，精美定制款', '/images/shop/usb.svg', 'PHYSICAL', 150, 30, 1, 1, 6),
+('咖啡厅代金券', '校园咖啡厅10元代金券', '/images/shop/coffee.svg', 'COUPON', 60, 200, 5, 1, 7),
+('打印代金券', '图书馆打印室5元代金券', '/images/shop/print.svg', 'COUPON', 25, 500, 10, 1, 8),
+('学霸徽章', '限量版学霸徽章，彰显学习成就', '/images/shop/badge.svg', 'PHYSICAL', 300, 20, 1, 1, 9),
+('年度VIP会员', '一年VIP会员资格，享受所有特权', '/images/shop/vip-year.svg', 'VIRTUAL', 500, 10, 1, 1, 10);
 
 -- 插入一些兑换记录示例
 INSERT INTO `point_exchange` (`exchange_no`, `user_id`, `product_id`, `product_name`, `product_image`, `points_cost`, `quantity`, `status`, `redeem_code`, `complete_time`, `create_time`) VALUES
-('EX1705123456001', 1, 1, 'VIP学习座位1天', '/images/shop/vip-seat.png', 50, 1, 'COMPLETED', 'VIP-ABCD-1234', NOW(), DATE_SUB(NOW(), INTERVAL 5 DAY)),
-('EX1705123456002', 1, 2, '延时签到券', '/images/shop/delay-ticket.png', 30, 1, 'COMPLETED', 'DLY-EFGH-5678', NOW(), DATE_SUB(NOW(), INTERVAL 3 DAY)),
-('EX1705123456003', 2, 5, '精美笔记本', '/images/shop/notebook.png', 80, 1, 'PROCESSING', NULL, NULL, DATE_SUB(NOW(), INTERVAL 1 DAY)),
-('EX1705123456004', 3, 7, '咖啡厅代金券', '/images/shop/coffee.png', 60, 2, 'COMPLETED', 'COF-IJKL-9012', NOW(), DATE_SUB(NOW(), INTERVAL 2 DAY));
+('EX1705123456001', 1, 1, 'VIP学习座位1天', '/images/shop/vip-seat.svg', 50, 1, 'COMPLETED', 'VIP-ABCD-1234', NOW(), DATE_SUB(NOW(), INTERVAL 5 DAY)),
+('EX1705123456002', 1, 2, '延时签到券', '/images/shop/delay-ticket.svg', 30, 1, 'COMPLETED', 'DLY-EFGH-5678', NOW(), DATE_SUB(NOW(), INTERVAL 3 DAY)),
+('EX1705123456003', 2, 5, '精美笔记本', '/images/shop/notebook.svg', 80, 1, 'PROCESSING', NULL, NULL, DATE_SUB(NOW(), INTERVAL 1 DAY)),
+('EX1705123456004', 3, 7, '咖啡厅代金券', '/images/shop/coffee.svg', 60, 2, 'COMPLETED', 'COF-IJKL-9012', NOW(), DATE_SUB(NOW(), INTERVAL 2 DAY));
 
 -- =====================================================
 -- 数据初始化完成

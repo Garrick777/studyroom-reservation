@@ -256,9 +256,6 @@ const router = createRouter({
   routes: [...publicRoutes, ...studentRoutes, ...adminRoutes, ...superAdminRoutes, ...errorRoutes]
 })
 
-// 标记是否已初始化
-let isInitialized = false
-
 // 根据角色获取首页路径
 function getHomePathByRole(role: string): string {
   switch (role) {
@@ -270,6 +267,9 @@ function getHomePathByRole(role: string): string {
       return '/dashboard'
   }
 }
+
+// 用于防止重复获取用户信息
+let isFetchingUserInfo = false
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
@@ -294,16 +294,24 @@ router.beforeEach(async (to, from, next) => {
     return
   }
   
-  // 首次访问需要登录的页面，先获取用户信息
-  if (!isInitialized && userStore.token && !userStore.userInfo) {
+  // 有Token但没有用户信息，需要获取
+  if (userStore.token && !userStore.userInfo && !isFetchingUserInfo) {
+    isFetchingUserInfo = true
     try {
       await userStore.fetchUserInfo()
-      isInitialized = true
     } catch (error) {
+      isFetchingUserInfo = false
       // Token无效，跳转登录
       next({ path: '/login', query: { redirect: to.fullPath } })
       return
     }
+    isFetchingUserInfo = false
+  }
+  
+  // 等待用户信息加载完成
+  if (isFetchingUserInfo) {
+    // 如果正在获取用户信息，等待一下再继续
+    await new Promise(resolve => setTimeout(resolve, 100))
   }
   
   // 访问根路径时，根据角色重定向到对应首页
