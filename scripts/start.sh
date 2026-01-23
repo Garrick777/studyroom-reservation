@@ -50,6 +50,16 @@ kill_port() {
 }
 
 # =====================================================
+# 0. 自动设置JAVA_HOME (macOS)
+# =====================================================
+if [ -z "$JAVA_HOME" ]; then
+    if [ -x /usr/libexec/java_home ]; then
+        export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
+        echo -e "${YELLOW}自动设置 JAVA_HOME: $JAVA_HOME${NC}"
+    fi
+fi
+
+# =====================================================
 # 1. 检查并释放端口
 # =====================================================
 echo -e "${YELLOW}[1/4] 检查端口...${NC}"
