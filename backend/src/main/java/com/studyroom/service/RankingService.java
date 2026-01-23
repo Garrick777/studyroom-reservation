@@ -208,7 +208,10 @@ public class RankingService {
 
         switch (type) {
             case "study_time":
-                result.put("value", user.getTotalStudyTime());
+                // 数据库存的是分钟，转换为小时（保留1位小数）
+                int totalMinutes = user.getTotalStudyTime() != null ? user.getTotalStudyTime() : 0;
+                double hours = Math.round(totalMinutes / 6.0) / 10.0;
+                result.put("value", hours);
                 result.put("unit", "小时");
                 // 计算排名
                 Long studyTimeRank = userMapper.selectCount(
@@ -317,7 +320,10 @@ public class RankingService {
             item.put("username", user.getUsername());
             item.put("realName", user.getRealName());
             item.put("avatar", user.getAvatar());
-            item.put("value", user.getTotalStudyTime());
+            // 数据库存的是分钟，转换为小时（保留1位小数）
+            int totalMinutes = user.getTotalStudyTime() != null ? user.getTotalStudyTime() : 0;
+            double hours = Math.round(totalMinutes / 6.0) / 10.0;  // 保留1位小数
+            item.put("value", hours);
             item.put("unit", "小时");
             ranking.add(item);
         }
