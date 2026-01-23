@@ -171,18 +171,18 @@ const goRegister = () => {
         
         <!-- 测试账号提示 -->
         <div class="test-accounts">
-          <p class="test-title">测试账号</p>
+          <p class="test-title">测试账号（密码均为 123456）</p>
           <div class="test-item">
             <span class="role">学生：</span>
-            <span>student01 / 123456</span>
+            <span>zhangsan / lisi / wangwu</span>
           </div>
           <div class="test-item">
             <span class="role">管理员：</span>
-            <span>admin01 / 123456</span>
+            <span>admin1 / admin2</span>
           </div>
           <div class="test-item">
             <span class="role">超管：</span>
-            <span>superadmin / 123456</span>
+            <span>superadmin</span>
           </div>
         </div>
       </div>
