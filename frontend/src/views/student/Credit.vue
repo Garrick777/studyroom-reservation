@@ -185,6 +185,8 @@ const handleTabChange = (tab: string) => {
 
 onMounted(() => {
   loadStats()
+  // 默认加载积分记录（因为默认选项卡是 records）
+  loadCreditRecords()
 })
 </script>
 

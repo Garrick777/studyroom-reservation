@@ -39,6 +39,19 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true,
+    // 开发服务器性能优化
+    hmr: {
+      overlay: false // 禁用错误覆盖层，提高性能
+    },
+    // 预热常用文件
+    warmup: {
+      clientFiles: [
+        './src/main.ts',
+        './src/App.vue',
+        './src/router/index.ts',
+        './src/stores/*.ts'
+      ]
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:9090',
@@ -83,6 +96,22 @@ export default defineConfig({
   },
   // 预构建优化
   optimizeDeps: {
-    include: ['vue', 'vue-router', 'pinia', 'axios', 'element-plus', 'lucide-vue-next']
-  }
+    include: [
+      'vue',
+      'vue-router',
+      'pinia',
+      'axios',
+      'element-plus',
+      'element-plus/es',
+      'element-plus/es/components/message/style/css',
+      'element-plus/es/components/message-box/style/css',
+      'lucide-vue-next',
+      'dayjs',
+      'nprogress'
+    ],
+    // 强制预构建
+    force: false
+  },
+  // 缓存配置
+  cacheDir: 'node_modules/.vite'
 })

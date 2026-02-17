@@ -6,9 +6,13 @@
 # =====================================================
 # 0. 最先设置 JAVA_HOME (macOS) - 必须在 set -e 之前
 # =====================================================
-if [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
+# 优先使用 Java 21
+if [ -d "/usr/local/Cellar/openjdk@21/21.0.10/libexec/openjdk.jdk/Contents/Home" ]; then
+    export JAVA_HOME="/usr/local/Cellar/openjdk@21/21.0.10/libexec/openjdk.jdk/Contents/Home"
+elif [ -z "$JAVA_HOME" ] || [ ! -d "$JAVA_HOME" ]; then
     if [ -x /usr/libexec/java_home ]; then
-        export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
+        # 尝试使用 java_home 查找 Java 21
+        export JAVA_HOME=$(/usr/libexec/java_home -v 21 2>/dev/null || /usr/libexec/java_home 2>/dev/null)
     fi
 fi
 

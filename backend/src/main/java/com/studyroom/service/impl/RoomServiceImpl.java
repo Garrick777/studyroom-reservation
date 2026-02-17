@@ -10,6 +10,7 @@ import com.studyroom.security.SecurityUtil;
 import com.studyroom.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -83,6 +84,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Cacheable(value = "studyRoom", key = "'detail:' + #roomId", unless = "#result == null")
     public StudyRoom getRoomById(Long roomId) {
         StudyRoom room = studyRoomMapper.selectById(roomId);
         if (room == null) {
