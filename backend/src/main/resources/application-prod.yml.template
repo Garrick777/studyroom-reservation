@@ -1,0 +1,145 @@
+# ========================================
+# 智慧自习室系统 - 生产环境配置模板
+# 复制此文件为 application-prod.yml 并填入实际值
+# application-prod.yml 不会被提交到 Git
+# ========================================
+
+server:
+  port: 9090
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: studyroom-system
+
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:studyroom}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&connectionCollation=utf8mb4_unicode_ci
+    username: ${DB_USER:studyroom}
+    password: ${DB_PASSWORD:changeme}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      pool-name: StudyRoomHikariCP
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  # Redis配置
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 0
+      timeout: 10000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+
+  # Jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    serialization:
+      write-dates-as-timestamps: false
+    default-property-inclusion: non_null
+
+  # 文件上传配置
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 20MB
+
+# MyBatis Plus配置
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.studyroom.entity
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      insert-strategy: not_null
+      update-strategy: not_null
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    # 生产环境关闭SQL日志
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+# JWT配置
+jwt:
+  secret: ${JWT_SECRET:changeme-use-a-very-long-random-string-at-least-64-characters}
+  expiration: 86400000  # 24小时
+  refresh-expiration: 604800000  # 7天
+  header: Authorization
+  prefix: "Bearer "
+
+# Knife4j配置（生产环境建议关闭）
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+knife4j:
+  enable: false
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.studyroom: INFO
+    com.studyroom.mapper: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /opt/studyroom/logs/backend.log
+    max-size: 100MB
+    max-history: 30
+
+# 文件上传路径
+upload:
+  path: /opt/studyroom/uploads
+  avatar-path: /avatars
+  image-path: /images
+
+# 自定义配置
+studyroom:
+  # 预约配置
+  reservation:
+    advance-days: 7
+    max-per-day: 3
+    cancel-limit-minutes: 30
+
+  # 签到配置
+  checkin:
+    early-minutes: 15
+    late-minutes: 15
+    timeout-minutes: 30
+
+  # 暂离配置
+  leave:
+    max-minutes: 30
+    max-count: 3
+
+  # 信用分配置
+  credit:
+    default-score: 100
+    min-score: 0
+    max-score: 100
+    no-show-penalty: 10
+    late-cancel-penalty: 5
+    overtime-leave-penalty: 3
+
+  # 黑名单配置
+  blacklist:
+    threshold: 60
+    duration-days: 7

@@ -109,7 +109,7 @@ chmod +x /opt/studyroom/scripts/deploy.sh
 curl http://localhost:9090/api/health
 
 # 检查前端
-curl http://localhost
+curl http://localhost/studyroom
 
 # 查看日志
 tail -f /opt/studyroom/logs/backend.log
@@ -228,9 +228,10 @@ server {
     listen 80;
     server_name _;
 
-    location / {
-        root /usr/share/nginx/html;
-        try_files $uri $uri/ /index.html;
+    location /studyroom {
+        alias /usr/share/nginx/html/studyroom;
+        try_files $uri $uri/ /studyroom/index.html;
+        index index.html;
     }
 
     location /api {
@@ -333,14 +334,69 @@ firewall-cmd --permanent --add-port=443/tcp
 firewall-cmd --reload
 ```
 
-### 2. 配置 SSL 证书（可选）
+### 2. 配置域名（推荐）
+
+如果你有域名（如 gavinsystem.top），按以下步骤配置：
+
+#### 2.1 DNS 解析配置
+
+在域名服务商控制台添加 A 记录：
+
+```
+记录类型: A
+主机记录: @
+记录值: 你的服务器公网IP
+TTL: 600
+```
+
+如果需要 www 子域名：
+```
+记录类型: A
+主机记录: www
+记录值: 你的服务器公网IP
+TTL: 600
+```
+
+#### 2.2 更新 Nginx 配置
+
+编辑 `/etc/nginx/conf.d/studyroom.conf`，将 `server_name _;` 改为你的域名：
+
+```nginx
+server {
+    listen 80;
+    server_name gavinsystem.top www.gavinsystem.top;
+
+    location /studyroom {
+        alias /usr/share/nginx/html/studyroom;
+        try_files $uri $uri/ /studyroom/index.html;
+        index index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:9090;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+重启 Nginx：
+```bash
+nginx -t
+systemctl restart nginx
+```
+
+访问地址：`http://gavinsystem.top/studyroom`
+
+### 3. 配置 SSL 证书（可选）
 
 ```bash
 # 安装 Certbot
 apt-get install -y certbot python3-certbot-nginx
 
-# 获取证书
-certbot --nginx -d your-domain.com
+# 获取证书（替换为你的域名）
+certbot --nginx -d gavinsystem.top -d www.gavinsystem.top
 
 # 自动续期
 certbot renew --dry-run

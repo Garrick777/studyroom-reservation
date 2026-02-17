@@ -32,6 +32,8 @@ frontend/.vite/
 .env
 .env.local
 .env.*.local
+deploy-config.sh
+backend/src/main/resources/application-prod.yml
 
 # ===================
 # Logs

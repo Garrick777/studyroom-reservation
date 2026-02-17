@@ -127,10 +127,11 @@ server {
     listen 80;
     server_name _;
 
-    # 前端静态文件
-    location / {
-        root /usr/share/nginx/html/studyroom;
-        try_files $uri $uri/ /index.html;
+    # 前端静态文件（子路径访问）
+    location /studyroom {
+        alias /usr/share/nginx/html/studyroom;
+        try_files $uri $uri/ /studyroom/index.html;
+        index index.html;
 
         # 缓存配置
         location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg)$ {
@@ -231,7 +232,7 @@ show_status() {
 
     echo ""
     echo -e "${CYAN}访问地址：${NC}"
-    echo -e "  前端: ${YELLOW}http://$(hostname -I | awk '{print $1}')${NC}"
+    echo -e "  前端: ${YELLOW}http://$(hostname -I | awk '{print $1}')/studyroom${NC}"
     echo -e "  后端: ${YELLOW}http://$(hostname -I | awk '{print $1}'):9090${NC}"
     echo -e "  API文档: ${YELLOW}http://$(hostname -I | awk '{print $1}'):9090/doc.html${NC}"
     echo ""
